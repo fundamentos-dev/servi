@@ -16,6 +16,7 @@ class MotivoAfastmento(models.Model):
     class Meta:
         # TODO verbose name sempre deve ser algo pensado no usuário, uma frase em CammelCase não é algo visivel e atrativo ao usuário
         verbose_name = 'Motivo do afastmento'
+        verbose_name_plural = 'Motivos dos afastamentos'
 
 
 class OrigemDiscipulo(models.Model):
@@ -28,6 +29,7 @@ class OrigemDiscipulo(models.Model):
 
     class Meta:
         verbose_name = 'Origem do discípulo'
+        verbose_name = 'Origens dos discípulos'
 
 
 class Profissao(models.Model):
@@ -40,6 +42,7 @@ class Profissao(models.Model):
     class Meta:
         # TODO No verbose name pode e devem ser usados acentos, para inteligibilidade do usuário
         verbose_name = 'Profissão'
+        verbose_name_plural = 'Profissões'
 
 
 class EstadoCivil(models.Model):
@@ -51,6 +54,7 @@ class EstadoCivil(models.Model):
 
     class Meta:
         verbose_name = 'estado civil'
+        verbose_name_plural = 'estados civis'
 
 
 class Bloco(models.Model):
@@ -73,7 +77,8 @@ class IgrejaCasa(models.Model):
         return f"{self.nome}"
 
     class Meta:
-        verbose_name='igreja casa'
+        verbose_name='Grupo caseiro'
+        verbose_name_plural ='Grupos caseiros'
 
 
 class Localidade(models.Model):
@@ -96,6 +101,7 @@ class Funcao(models.Model):
 
     class Meta:
         verbose_name='Função'
+        verbose_name_plural='Funções'
 
 
 class NivelServico(models.Model):
@@ -106,9 +112,11 @@ class NivelServico(models.Model):
         return f"{self.nome}"
 
     class Meta:
-        verbose_name='Nível do servico'
+        verbose_name='Nível do serviço'
+        verbose_name='Niveis dos serviços'
 
 class Pessoa(AbstractBaseUser, PermissionsMixin):
+    pass
     SEXO_CHOICES = (
         ("F", "Feminino"),
         ("M", "Masculino"),
@@ -118,22 +126,22 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     email=models.EmailField('Endereço de email', unique=True)
     nome=models.CharField(max_length = 256)
     data_nascimento=models.DateField(
-        'Data  nascimento')
+        'Data  nascimento', auto_now=True)
     #########################################################
     discipulo_vinculado=models.BooleanField(
-        'Está vinculado?', default = False)
+        'Está vinculado?', default=1)
     apelido=models.CharField(
         'Apelido', max_length = 256, blank = True)
     data_vinculacao_igreja_local=models.DateField(
-        'Qual a data de vinculação?', blank = True)
-    data_afastamento=models.DateField(blank = True)
+        'Qual a data de vinculação?', null=True, blank = True)
+    data_afastamento=models.DateField(null=True, blank = True)
     # ! Não entendi o pq desse length em sexo, estava assim lá?
-    sexo=models.CharField(max_length=1, choices=SEXO_CHOICES, blank=False, null=False)
+    sexo=models.CharField(max_length=1, choices=SEXO_CHOICES, blank=True, null=True)
     #########################################
 
     # Esseas abaixo não devem ser editados
-    is_staff=models.BooleanField('Está ativo?', default = False)
-    is_active=models.BooleanField('É da equipe?', default = True)
+    is_staff=models.BooleanField('É da equipe?', default = False)
+    is_active=models.BooleanField('Está ativo?', default = True)
     created_at=models.DateTimeField('Data de Cadastro', auto_now_add = True)
 
     '''
@@ -142,16 +150,16 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     ===============
     '''
     # TODO Novamente reforçando sobre a legibilidade dos verbose names
-    funcao=models.ForeignKey('Funcao', related_name = 'funcao', on_delete = models.CASCADE)
-    estado_civil=models.ForeignKey('EstadoCivil', related_name = 'estado_civil', on_delete = models.CASCADE)
-    igreja_casa=models.ForeignKey('IgrejaCasa', related_name = 'igreja_casa', on_delete = models.CASCADE)
-    localidade=models.ForeignKey('Localidade', related_name = 'localidade', on_delete = models.CASCADE)
-    nivel=models.ForeignKey('NivelServico', related_name = 'nivel', on_delete = models.CASCADE)
-    motivo_afastamento=models.ForeignKey('MotivoAfastmento', related_name = 'motivo_afastamento', on_delete = models.CASCADE)
-    origem=models.ForeignKey('OrigemDiscipulo', related_name = 'origem', on_delete = models.CASCADE)
-    profissao=models.ForeignKey('Profissao', related_name = 'profissão', on_delete = models.CASCADE)
-    pai=models.ForeignKey('self', related_name = 'pessoa_pai', on_delete = models.CASCADE)
-    mae=models.ForeignKey('self', related_name = 'pessoa_mae', on_delete = models.CASCADE)
+    funcao=models.ForeignKey('Funcao', related_name = 'funcao', on_delete = models.CASCADE, null=True, blank=True)
+    estado_civil=models.ForeignKey('EstadoCivil', related_name = 'estado_civil', on_delete = models.CASCADE, null=True, blank=True)
+    igreja_casa=models.ForeignKey('IgrejaCasa', related_name = 'igreja_casa', on_delete = models.CASCADE, null=True, blank=True)
+    localidade=models.ForeignKey('Localidade', related_name = 'localidade', on_delete = models.CASCADE, null=True, blank=True)
+    nivel=models.ForeignKey('NivelServico', related_name = 'nivel', on_delete = models.CASCADE, null=True, blank=True)
+    motivo_afastamento=models.ForeignKey('MotivoAfastmento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null=True, blank=True)
+    origem=models.ForeignKey('OrigemDiscipulo', related_name = 'origem', on_delete = models.CASCADE, null=True, blank=True)
+    profissao=models.ForeignKey('Profissao', related_name = 'profissão', on_delete = models.CASCADE, null=True, blank=True)
+    pai=models.ForeignKey('self', related_name = 'pessoa_pai', on_delete = models.CASCADE, null=True, blank=True)
+    mae=models.ForeignKey('self', related_name = 'pessoa_mae', on_delete = models.CASCADE, null=True, blank=True)
     ##########################################
 
 
@@ -176,17 +184,20 @@ class Permissao(models.Model):
     def __str__(self):
         return f'{self.nome}'
     class Meta:
-        verbose_name='Permissao'
+        verbose_name='Permissão'
+        verbose_name_plural='Permissões'
 
 
 class PessoaPermissao(models.Model):
     pessoa=models.ForeignKey('Pessoa', related_name = 'pessoas',
-                                on_delete = models.CASCADE)
+                                on_delete = models.CASCADE, blank=True, null=True)
     permissao=models.ForeignKey('Pessoa', related_name = 'permissao',
-                                   on_delete = models.CASCADE)
+                                   on_delete = models.CASCADE, blank=True, null=True)
 
     class Meta:
         verbose_name='Permissão da pessoa'
+        verbose_name_plural='Permissões das pessoas'
+        unique_together=('pessoa', 'permissao')
 
 
 class Conjugue(models.Model):
@@ -196,15 +207,15 @@ class Conjugue(models.Model):
                                 on_delete = models.CASCADE)
 
     class Meta:
-        verbose_name='Telefone'
+        verbose_name='Cônjugue'
 
 
 class JuntaCompanheirismo(models.Model):
     discipulo_um=models.ManyToManyField('Pessoa', related_name='discipulo_um')
     discipulo_dois=models.ManyToManyField('Pessoa', related_name='discipulo_dois')
-
     class Meta:
         verbose_name='Companheirismo'
+        #unique_together=('discipulo_um', 'discipulo_dois')
 
 
 class JuntaDiscipulado(models.Model):

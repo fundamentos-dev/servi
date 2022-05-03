@@ -7,12 +7,12 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
       - ./scripts:/usr/src
-      - ./.env:/usr/src/.env
+      - ./.env:/run/desktop/mnt/host/c/filipe_final/servi/.env
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - "5432:5432"
+      - "54323:5432"
   app:
     container_name: servi_app
     restart: always
