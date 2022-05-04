@@ -7,12 +7,13 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
       - ./scripts:/usr/src
-      - ./.env:/run/desktop/mnt/host/c/filipe_final/servi/.env
+      - ./.env:/usr/src/.env
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - "54323:5432"
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+    ports:
+      - "${POSTGRES_PORT}:5432"
   app:
     container_name: servi_app
     restart: always
@@ -21,11 +22,11 @@ services:
       - .:/usr/src/app
     environment:
       - DJANGO_SETTINGS_MODULE=app.settings
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASS=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASS=${POSTGRES_PASS}
     ports:
-      - "8000:8000"
+      - "${DJANGO_APP_PORT}:8000"
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
