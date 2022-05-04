@@ -6,7 +6,6 @@ from django.db import models
 
 
 class MotivoAfastmento(models.Model):
-    # TODO deve ser colocado também aqui o nome verboso de cada coluna, já qu eiremos utilizar bastante o painel admin é importante que esteja compreensível
     nome = models.CharField(
         'Descrição do motivo de afastamento', max_length=256)
 
@@ -14,13 +13,11 @@ class MotivoAfastmento(models.Model):
         return f"{self.nome}"
 
     class Meta:
-        # TODO verbose name sempre deve ser algo pensado no usuário, uma frase em CammelCase não é algo visivel e atrativo ao usuário
         verbose_name = 'Motivo do afastmento'
         verbose_name_plural = 'Motivos dos afastamentos'
 
 
 class OrigemDiscipulo(models.Model):
-    # TODO por default os campos já vem como obrigatórios, dessa forma não é necessário o blank=False e o null=False
     nome = models.CharField(
         'Origem do discípulo', max_length=256)
 
@@ -40,7 +37,6 @@ class Profissao(models.Model):
         return f"{self.nome}"
 
     class Meta:
-        # TODO No verbose name pode e devem ser usados acentos, para inteligibilidade do usuário
         verbose_name = 'Profissão'
         verbose_name_plural = 'Profissões'
 
@@ -98,7 +94,7 @@ class Funcao(models.Model):
 
     def __str__(self):
         return f"{self.nome}"
-
+    
     class Meta:
         verbose_name='Função'
         verbose_name_plural='Funções'
@@ -113,7 +109,7 @@ class NivelServico(models.Model):
 
     class Meta:
         verbose_name='Nível do serviço'
-        verbose_name='Niveis dos serviços'
+        verbose_name_plural='Niveis dos serviços'
 
 class Pessoa(AbstractBaseUser, PermissionsMixin):
     pass
@@ -135,7 +131,7 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     data_vinculacao_igreja_local=models.DateField(
         'Qual a data de vinculação?', null=True, blank = True)
     data_afastamento=models.DateField(null=True, blank = True)
-    # ! Não entendi o pq desse length em sexo, estava assim lá?
+
     sexo=models.CharField(max_length=1, choices=SEXO_CHOICES, blank=True, null=True)
     #########################################
 
@@ -149,7 +145,6 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     Relacionamentos
     ===============
     '''
-    # TODO Novamente reforçando sobre a legibilidade dos verbose names
     funcao=models.ForeignKey('Funcao', related_name = 'funcao', on_delete = models.CASCADE, null=True, blank=True)
     estado_civil=models.ForeignKey('EstadoCivil', related_name = 'estado_civil', on_delete = models.CASCADE, null=True, blank=True)
     igreja_casa=models.ForeignKey('IgrejaCasa', related_name = 'igreja_casa', on_delete = models.CASCADE, null=True, blank=True)
