@@ -126,7 +126,7 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     email=models.EmailField('Endereço de email', unique=True)
     nome=models.CharField(max_length = 256)
     data_nascimento=models.DateField(
-        'Data  nascimento', auto_now=True)
+        'Data  nascimento')
     #########################################################
     discipulo_vinculado=models.BooleanField(
         'Está vinculado?', default=1)
