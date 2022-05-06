@@ -26,8 +26,7 @@ class OrigemDiscipulo(models.Model):
         return f"{self.nome}"
     
     class Meta:
-        verbose_name = 'Origem do discipulo'
-        verbose_name = 'Origem dos discipulos'
+        verbose_name = 'OrigemDiscipulo'
 
 
 class Profissao(models.Model):
@@ -49,8 +48,7 @@ class EstadoCivil(models.Model):
         return f"{self.nome}"
     
     class Meta:
-        verbose_name = 'Estado cívil'
-        verbose_name_plural = 'Estados civis'
+        verbose_name = 'EstadoCivil'
 
 
 class Bloco(models.Model):
@@ -71,8 +69,7 @@ class IgrejaCasa(models.Model):
         return f"{self.nome}"
     
     class Meta:
-        verbose_name = 'Grupo caseiro'
-        verbose_name = 'Grupos caseiros'
+        verbose_name = 'IgrejaCasa'
 
 
 class Localidade(models.Model):
@@ -92,8 +89,7 @@ class Funcao(models.Model):
         return f"{self.nome}"
 
     class Meta:
-        verbose_name = 'Função'
-        verbose_name = 'Funçõeo'
+        verbose_name = 'Funcao'
 
 
 class NivelServico(models.Model):
@@ -171,18 +167,16 @@ class Permissao(models.Model):
     def __str__(self):
         return f'{self.nome}
     class Meta:
-        verbose_name = 'Permissão'
-        verbose_name = 'Permissões'
+        verbose_name = 'Permissao'
 
 
 class PessoaPermissao(models.Model):
-    pessoa_id = models.ForeignKey('Pessoa', related_name='pessoa', on_delete=models.CASCADE, blank=False, null=False)
-    permissao_id = models.ForeignKey('Pessoa', related_name='permicao', on_delete=models.CASCADE, blank=False, null=False)
+    pessoa_id = models.ForeignKey('Pessoa', related_name='pessoa_pessoas_permissao', on_delete=models.CASCADE, blank=False, null=False)
+    permissao_id = models.ForeignKey('Pessoa', related_name='permicao_pessoas_permissao', on_delete=models.CASCADE, blank=False, null=False)
 
     ## Precisa retonar str? 
     class Meta:
-        verbose_name = 'Permissao da pessoa'
-        verbose_name_plural = 'Permissões das pessoas'
+        verbose_name = 'PessoaPermissao'
 
 
 class Conjugue(models.Model):
@@ -200,8 +194,7 @@ class JuntaCompanheirismo(models.Model):
 
     ## Precisa retonar str? 
     class Meta:
-        verbose_name = 'Junta companheirismo'
-        verbose_name_plural = 'Juntas companheirismo'
+        verbose_name = 'JuntaCompanheirismo'
         unique_together = ('discipulo_um_id', 'discipulo_dois_id')
 
 
@@ -211,8 +204,7 @@ class JuntaDiscipulado(models.Model):
 
     ## Precisa retonar str? 
     class Meta:
-        verbose_name = 'Junta discipulado'
-        verbose_name_plural = 'Juntas discipulado'
+        verbose_name = 'JuntaDiscipulado'
         unique_together = ('discipulador_id', 'discipulo_id')
 
 
