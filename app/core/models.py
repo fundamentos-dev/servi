@@ -1,5 +1,6 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Group
 from app.core.manager import PessoaManager
+from django.contrib.auth.models import (AbstractBaseUser, Group,
+                                        PermissionsMixin)
 from django.db import models
 
 # Aqui você vai criar todos os models baseado em https://dbdiagram.io/d/620ac9c585022f4ee5924b0a
@@ -112,7 +113,6 @@ class NivelServico(models.Model):
         verbose_name_plural = 'Niveis dos serviços'
 
 class Pessoa(AbstractBaseUser, PermissionsMixin):
-    pass
     SEXO_CHOICES = (
         ("F", "Feminino"),
         ("M", "Masculino"),
@@ -122,7 +122,7 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('Endereço de email', unique = True)
     nome = models.CharField(max_length = 256)
     data_nascimento = models.DateField(
-        'Data  nascimento')
+        'Data  nascimento', auto_now = True)
     discipulo_vinculado = models.BooleanField(
         'Está vinculado?', default = 1)
     apelido = models.CharField(
@@ -144,15 +144,15 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     Relacionamentos
     ===============
     '''
-    grupo = models.ForeignKey(Group)
-    funcao = models.ForeignKey('Função', related_name = 'funcao', on_delete = models.CASCADE, null = True, blank = True)
-    estado_civil = models.ForeignKey('Estado civil', related_name = 'estado_civil', on_delete = models.CASCADE, null = True, blank = True)
-    igreja_casa = models.ForeignKey('Grupo caseiro', related_name = 'igreja_casa', on_delete = models.CASCADE, null = True, blank = True)
+    grupo = models.ForeignKey(Group, related_name = 'group', on_delete = models.CASCADE, null = True, blank = True)
+    funcao = models.ForeignKey('Funcao', related_name = 'funcao', on_delete = models.CASCADE, null = True, blank = True)
+    estado_civil = models.ForeignKey('EstadoCivil', related_name = 'estado_civil', on_delete = models.CASCADE, null = True, blank = True)
+    igreja_casa = models.ForeignKey('IgrejaCasa', related_name = 'igreja_casa', on_delete = models.CASCADE, null = True, blank = True)
     localidade = models.ForeignKey('Localidade', related_name = 'localidade', on_delete = models.CASCADE, null = True, blank = True)
-    nivel = models.ForeignKey('Nível do serviço', related_name = 'nivel', on_delete = models.CASCADE, null = True, blank =True)
-    motivo_afastamento = models.ForeignKey('Motivo do afastmento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null = True, blank = True)
-    origem = models.ForeignKey('Origem do discipulo', related_name = 'origem', on_delete = models.CASCADE, null = True, blank = True)
-    profissao = models.ForeignKey('Profissão', related_name = 'profissao', on_delete = models.CASCADE, null = True, blank = True)
+    nivel = models.ForeignKey('NivelServico', related_name = 'nivel', on_delete = models.CASCADE, null = True, blank =True)
+    motivo_afastamento = models.ForeignKey('MotivoAfastmento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null = True, blank = True)
+    origem = models.ForeignKey('OrigemDiscipulo', related_name = 'origem', on_delete = models.CASCADE, null = True, blank = True)
+    profissao = models.ForeignKey('Profissao', related_name = 'profissao', on_delete = models.CASCADE, null = True, blank = True)
     pai = models.ForeignKey('self', related_name = 'pessoa_pai', on_delete = models.CASCADE, null = True, blank = True)
     mae = models.ForeignKey('self', related_name = 'pessoa_mae', on_delete = models.CASCADE, null = True, blank = True)
 
