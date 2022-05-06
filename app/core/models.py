@@ -4,23 +4,17 @@ from django.db import models
 
 # Aqui você vai criar todos os models baseado em https://dbdiagram.io/d/620ac9c585022f4ee5924b0a
 class MotivoAfastmento(models.Model):
-    # TODO deve ser colocado também aqui o nome verboso de cada coluna, já qu eiremos utilizar bastante o painel admin é importante que esteja compreensível
-    nome = models.CharField(
-        'Descrição do motivo de afastamento', max_length=256)
+    nome = models.CharField(max_length=256, , blank=False, null=False)
 
     def __str__(self):
         return f"{self.nome}"
     
     class Meta:
-        # TODO verbose name sempre deve ser algo pensado no usuário, uma frase em CammelCase não é algo visivel e atrativo ao usuário
-        verbose_name = 'Motivo do afastmento'
-        verbose_name_plural = 'Motivos dos afastamentos'
+        verbose_name = 'MotivoAfastmento'
 
 
 class OrigemDiscipulo(models.Model):
-    # TODO por default os campos já vem como obrigatórios, dessa forma não é necessário o blank=False e o null=False
-    nome = models.CharField(
-        'Origem do discípulo', max_length=256)
+    nome = models.CharField(max_length=256, blank=False, null=False)
 
     def __str__(self):
         return f"{self.nome}"
@@ -30,15 +24,13 @@ class OrigemDiscipulo(models.Model):
 
 
 class Profissao(models.Model):
-    nome = models.CharField(max_length=256, blank=False, null=False)
+    nome = models.CharField(max_length=256, , blank=False, null=False)
 
     def __str__(self):
         return f"{self.nome}"
     
     class Meta:
-        # TODO No verbose name pode e devem ser usados acentos, para inteligibilidade do usuário
-        verbose_name = 'Profissão'
-        verbose_name_plural = 'Profissões'
+        verbose_name = 'Profissao'
 
 
 class EstadoCivil(models.Model):
@@ -63,7 +55,7 @@ class Bloco(models.Model):
 
 class IgrejaCasa(models.Model):
     nome = models.CharField(max_length=256, blank=False, null=False)
-    bloco_id = models.ForeignKey('Bloco', related_name='igreja_casa', on_delete=models.CASCADE, null=False, blank=False),
+    bloco_id = models.ForeignKey('Bloco', related_name='igreja_casa',on_delete=models.CASCADE, null=False, blank=False))
 
     def __str__(self):
         return f"{self.nome}"
@@ -87,7 +79,7 @@ class Funcao(models.Model):
 
     def __str__(self):
         return f"{self.nome}"
-
+    
     class Meta:
         verbose_name = 'Funcao'
 
@@ -99,28 +91,19 @@ class NivelServico(models.Model):
         return f"{self.nome}"
     
     class Meta:
-        verbose_name='Nível do serviço'
-        verbose_name='Niveis dos serviços'
+        verbose_name = 'NivelServico'
 
 class Pessoa(AbstractBaseUser, PermissionsMixin):
-    SEXO_CHOICES = (
-        ("F", "Feminino"),
-        ("M", "Masculino"),
-        ("N", "Nenhuma das opções")
-    )
     email = models.EmailField('Endereço de email')
     nome = models.CharField(max_length=256, null=False, blank=False)
     data_nascimento = models.DateField('Data de nascimento', null=False, blank=False)
     #########################################################
-    discipulo_vinculado=models.BooleanField(
-        'Está vinculado?', default=1)
-    apelido=models.CharField(
-        'Apelido', max_length = 256, blank = True)
-    data_vinculacao_igreja_local=models.DateField(
-        'Qual a data de vinculação?', null=True, blank = True)
-    data_afastamento=models.DateField(null=True, blank = True)
-    # ! Não entendi o pq desse length em sexo, estava assim lá?
-    sexo=models.CharField(max_length=1, choices=SEXO_CHOICES, blank=True, null=True)
+    discipulo_vinculado = models.BooleanField('Está vinculado?', default=False, blank=False, null=False)
+    apelido = models.CharField(max_length=256, blank=True)    
+    data_vinculacao_igreja_local = models.DateField(blank=True)
+    data_afastamento = models.DateField(blank=True)
+    password = models.CharField(max_length=256)### o que fazer 
+    sexo = models.CharField(max_length=10 ,blank=True) 
     #########################################
     
     # Esseas abaixo não devem ser editados
@@ -128,23 +111,21 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField('É da equipe?', default=True)
     created_at = models.DateTimeField('Data de Cadastro', auto_now_add=True)
 
-    '''
-    ===============
-    Relacionamentos
-    ===============
-    '''
-    # TODO Novamente reforçando sobre a legibilidade dos verbose names
-    funcao=models.ForeignKey('Funcao', related_name = 'funcao', on_delete = models.CASCADE, null=True, blank=True)
-    estado_civil=models.ForeignKey('EstadoCivil', related_name = 'estado_civil', on_delete = models.CASCADE, null=True, blank=True)
-    igreja_casa=models.ForeignKey('IgrejaCasa', related_name = 'igreja_casa', on_delete = models.CASCADE, null=True, blank=True)
-    localidade=models.ForeignKey('Localidade', related_name = 'localidade', on_delete = models.CASCADE, null=True, blank=True)
-    nivel=models.ForeignKey('NivelServico', related_name = 'nivel', on_delete = models.CASCADE, null=True, blank=True)
-    motivo_afastamento=models.ForeignKey('MotivoAfastmento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null=True, blank=True)
-    origem=models.ForeignKey('OrigemDiscipulo', related_name = 'origem', on_delete = models.CASCADE, null=True, blank=True)
-    profissao=models.ForeignKey('Profissao', related_name = 'profissão', on_delete = models.CASCADE, null=True, blank=True)
-    pai=models.ForeignKey('self', related_name = 'pessoa_pai', on_delete = models.CASCADE, null=True, blank=True)
-    mae=models.ForeignKey('self', related_name = 'pessoa_mae', on_delete = models.CASCADE, null=True, blank=True)
+    # Relacionamentos
+    funcao = models.ForeignKey(
+        'Funcao', related_name='pessoas_funcao', on_delete=models.CASCADE)
     ##########################################
+    estado_civil = models.ForeignKey('EstadoCivil', related_name='pessoas_estado_civil', on_delete=models.CASCADE)
+    igreja_casa_id = models.ForeignKey('IgrejaCasa', related_name='pessoas_igreja_casa', on_delete=models.CASCADE)
+    localidade_id = models.ForeignKey('Localidade', related_name='pessoas_localidade', on_delete=models.CASCADE)
+    nivel_id = models.ForeignKey('NivelServico', related_name='pessoas_nivel', on_delete=models.CASCADE)a
+    motivo_afastamento = models.ForeignKey('MotivoAfastmento', related_name='pessoas_motivo_afastamento', on_delete=models.CASCADE)
+    origem_id = models.ForeignKey('OrigemDiscipulo', related_name='pessoas_origem',on_delete=models.CASCADE)
+    profissao_id = models.ForeignKey('Profissao', related_name='pessoas_profissao',on_delete=models.CASCADE)
+    pai_id = models.ForeignKey('self', related_name='pessoas_pai' ,on_delete=models.CASCADE)
+    mae_id = models.ForeignKey('self',related_name='pessoas_mae' ,on_delete=models.CASCADE)
+    ##########################################
+    
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'

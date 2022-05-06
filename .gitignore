@@ -1,7 +1,2 @@
 .env
-<<<<<<< HEAD
 data
-=======
-data
-__pycache__
->>>>>>> parent of 7d0bdc3 (adição da pasta Venv no arquivo .gitignore)
