@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 
-from .models import Pessoa, 
+from .models import Pessoa, Bloco
 
 
-@admin.register(models.Pessoa)
+@admin.register(Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
     list_display = ('id', 'email', 'nome', 'data_nascimento', 'discipulo_vinculado', 'apelido', 'data_vinculacao_igreja_local', \
                     'data_afastamento', 'sexo')
@@ -27,7 +27,7 @@ class PessoaAdmin(admin.ModelAdmin):
         if request.user.has_perm('pode_ver_editar_proprios_dados') and not request.user.is_superuser:
             return qs.filter(email = request.user.email)
         elif request.user.has_perm('pode_ver_editar_discipulos_grupo_caseiro') or request.user.has_perm('pode_ver_discipulos_grupo_caseiro'):
-            return qs.filter(igreja_casa = request.user.igreja_casa)
+            return qs.filter(grupo_caseiro = request.user.grupo_caseiro)
       
         return True
     
@@ -59,7 +59,7 @@ class PessoaAdmin(admin.ModelAdmin):
 
 
 
-# @admin.register(models.IgrejaCasa)
+# @admin.register(models.GrupoCaseiro)
 # class IgrejaCasaAdmin(admin.ModelAdmin):
 #     pass
 

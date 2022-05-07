@@ -65,10 +65,10 @@ class Bloco(models.Model):
         verbose_name = 'Bloco'
 
 
-class IgrejaCasa(models.Model):
+class GrupoCaseiro(models.Model):
     nome = models.CharField(
         'Grupo Caseiro', max_length = 256)
-    bloco = models.ForeignKey('Bloco', related_name = 'igreja_casa', on_delete = models.CASCADE)
+    bloco = models.ForeignKey('Bloco', related_name = 'grupo_caseiro', on_delete = models.CASCADE)
 
     def __str__(self):
         return f"{self.nome}"
@@ -144,15 +144,18 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     Relacionamentos
     ===============
     '''
+    
+    ## Variável 'grupo' está sendo utilizada para teste
+    ## Por algum motivo o campo padrão para escolher o grupo, não permite atribuir o grupo
     grupo = models.ForeignKey(Group, related_name = 'group', on_delete = models.CASCADE, null = True, blank = True)
-    funcao = models.ForeignKey('Funcao', related_name = 'funcao', on_delete = models.CASCADE, null = True, blank = True)
-    estado_civil = models.ForeignKey('EstadoCivil', related_name = 'estado_civil', on_delete = models.CASCADE, null = True, blank = True)
-    igreja_casa = models.ForeignKey('IgrejaCasa', related_name = 'igreja_casa', on_delete = models.CASCADE, null = True, blank = True)
-    localidade = models.ForeignKey('Localidade', related_name = 'localidade', on_delete = models.CASCADE, null = True, blank = True)
-    nivel = models.ForeignKey('NivelServico', related_name = 'nivel', on_delete = models.CASCADE, null = True, blank =True)
-    motivo_afastamento = models.ForeignKey('MotivoAfastmento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null = True, blank = True)
-    origem = models.ForeignKey('OrigemDiscipulo', related_name = 'origem', on_delete = models.CASCADE, null = True, blank = True)
-    profissao = models.ForeignKey('Profissao', related_name = 'profissao', on_delete = models.CASCADE, null = True, blank = True)
+    funcao = models.ForeignKey('funcao', related_name = 'funcao', on_delete = models.CASCADE, null = True, blank = True)
+    estado_civil = models.ForeignKey('estado_civil', related_name = 'estado_civil', on_delete = models.CASCADE, null = True, blank = True)
+    grupo_caseiro = models.ForeignKey('grupo_caseiro', related_name = 'grupo_caseiro', on_delete = models.CASCADE, null = True, blank = True)
+    localidade = models.ForeignKey('localidade', related_name = 'localidade', on_delete = models.CASCADE, null = True, blank = True)
+    nivel = models.ForeignKey('nivel_servico', related_name = 'nivel', on_delete = models.CASCADE, null = True, blank =True)
+    motivo_afastamento = models.ForeignKey('motivo_afastamento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null = True, blank = True)
+    origem = models.ForeignKey('origem_discipulo', related_name = 'origem', on_delete = models.CASCADE, null = True, blank = True)
+    profissao = models.ForeignKey('profissao', related_name = 'profissao', on_delete = models.CASCADE, null = True, blank = True)
     pai = models.ForeignKey('self', related_name = 'pessoa_pai', on_delete = models.CASCADE, null = True, blank = True)
     mae = models.ForeignKey('self', related_name = 'pessoa_mae', on_delete = models.CASCADE, null = True, blank = True)
 
@@ -208,7 +211,7 @@ class JuntaCompanheirismo(models.Model):
     discipulo_dois = models.ManyToManyField('Pessoa', related_name = 'discipulo_dois')
     class Meta:
         verbose_name = 'Companheirismo'
-        #unique_together=('discipulo_um', 'discipulo_dois')
+        unique_together=('discipulo_um', 'discipulo_dois')
 
 
 class JuntaDiscipulado(models.Model):
