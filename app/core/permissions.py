@@ -13,11 +13,10 @@ from .models import GrupoCaseiro, Pessoa, Bloco
 
 
 class PermissaoMixin:
-
     ## Criação dos grupos 
     discipulo = Group.objects.get_or_create(name = 'Discipulo')
-    auxiliar_diacono = Group.objects.get_or_create(name = 'Auxiliar diácono')
     lider_g_caseiro = Group.objects.get_or_create(name = 'Lider do gurpo caseiro')
+    auxiliar_diacono = Group.objects.get_or_create(name = 'Auxiliar diácono')
     diacono_bloco = Group.objects.get_or_create(name = 'Diácono bloco')
     diacono_geral = Group.objects.get_or_create(name = 'Diácono geral')
     presbitero = Group.objects.get_or_create(name = 'Presbítero')
@@ -26,7 +25,6 @@ class PermissaoMixin:
     ## Criação dos ContentTypes que estão sendo utilizados
     ct_pessoa = ContentType.objects.get_for_model(Pessoa)
     ct_grupo_caseiro = ContentType.objects.get_for_model(GrupoCaseiro)
-    ct_bloco = ContentType.objects.get_for_model(Bloco)
     
     ## Criação das permissões para o model Pessoa
     permission_discipulo = Permission.objects.get_or_create(codename = 'pode_ver_editar_proprios_dados',

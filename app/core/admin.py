@@ -24,9 +24,16 @@ class PessoaAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         # if request.user.is_superuser:
         #     return qs.all()
-        if request.user.has_perm('pode_ver_editar_proprios_dados') and not request.user.is_superuser:
+        
+        ## Testando qual tipo de permissão tem o usuário
+        request_discipulo = request.user.has_perm('pode_ver_editar_proprios_dados')
+        request_lider_g_caseiro = request.user.has_perm('pode_ver_discipulos_grupo_caseiro')
+        request_auxiliar_diacono = request.user.has_perm('pode_ver_editar_discipulos_grupo_caseiro')
+        
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request_discipulo and not request.user.is_superuser:
             return qs.filter(email = request.user.email)
-        elif request.user.has_perm('pode_ver_editar_discipulos_grupo_caseiro') or request.user.has_perm('pode_ver_discipulos_grupo_caseiro'):
+        elif request_lider_g_caseiro or request_auxiliar_diacono :
             return qs.filter(grupo_caseiro = request.user.grupo_caseiro)
       
         return True
