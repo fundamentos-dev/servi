@@ -13,12 +13,6 @@ from .models import GrupoCaseiro, Pessoa, Bloco
 
 
 class PermissaoMixin:
-    # Adicionando usuários de teste
-    # from django.contrib.auth import get_user_model
-    # User = get_user_model()
-    # User(username="colaborador", name="Colaborador de Teste", email="colaborador@jogodabiblia.com.br", phone="71992540736", is_whatsapp=True, is_staff=True).save()
-    # colaborador = User.objects.get(username="colaborador")
-    # colaborador.set_password("passw@rd")
 
     ## Criação dos grupos 
     discipulo = Group.objects.get_or_create(name = 'Discipulo')
