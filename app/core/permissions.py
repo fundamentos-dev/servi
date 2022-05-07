@@ -35,13 +35,13 @@ class PermissaoMixin:
 
     ## Criação das permissões para o model Pessoa
     ct = ContentType.objects.get_for_model(Pessoa)
-    permission = Permission.objects.get_or_create(codename = 'pode_ver_editar_proprios_dado',
+    permission = Permission.objects.get_or_create(codename = 'pode_ver_editar_proprios_dados',
                                         name = 'Pode ver e editar os próprios dados',
                                         content_type = ct)
-    permission = Permission.objects.get_or_create(codename = 'pode_ver_editar_grupo_caseiro',
+    permission = Permission.objects.get_or_create(codename = 'pode_ver_editar_discipulos_grupo_caseiro',
                                         name = 'Pode ver e editar os díscipulos do seu grupo caseiro',
                                         content_type = ct)
-    permission = Permission.objects.get_or_create(codename = 'pode_ver_grupo_caseiro',
+    permission = Permission.objects.get_or_create(codename = 'pode_ver_discipulos_grupo_caseiro',
                                         name = 'Pode ver os díscipulos do seu grupo caseiro',
                                         content_type = ct)
     permission = Permission.objects.get_or_create(codename = 'pode_ver_editar_proprio_bloco',
