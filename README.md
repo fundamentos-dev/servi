@@ -42,5 +42,6 @@ Só funciona em linux, é útil para executar blocos de códigos juntos, sem pre
 make init
 ```
 
-teste@teste.com 
-teste
+## Gerando usuários e Objetos iniciais de teste
+
+Após terminado de escrever o script que gerará os usuários em `seed.py` rode o comando `make seed` para executá-lo, ou o comando que se encontra dentro do bloco `seed` do mesmo nome para Windows.

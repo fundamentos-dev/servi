@@ -18,5 +18,7 @@ migrate:
 	docker exec -it servi_app bash -c "python manage.py migrate"
 terminal:
 	docker exec -it servi_app bash
+seed:
+	docker exec -it servi_app bash -c "python manage.py migrate shell < app/seed.py"	
 
 	
