@@ -5,12 +5,6 @@ from django.http import Http404
 
 from . import models
 
-
-class AbcForm(ModelForm):
-    class Meta:
-        model = models.Pessoa
-        exclude = ["nome", "email"]
-
 @admin.register(models.Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
     list_display = ('id', 'email', 'nome', 'data_nascimento', 'discipulo_vinculado', 'apelido', 'data_vinculacao_igreja_local', \
@@ -60,6 +54,10 @@ class PessoaAdmin(admin.ModelAdmin):
             disabled_fields |= {
                 'grupo_caseiro',
             }
+            
+        for f in fields:
+            if f in form.base_fields:
+                form.base_fields[f].ex = True
             
 
         for f in disabled_fields:
