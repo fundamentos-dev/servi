@@ -10,6 +10,7 @@ from app.core.models import Bloco, GrupoCaseiro, Pessoa
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
+
 class PermissaoMixin:
     ## Criação dos grupos 
     discipulo, created = Group.objects.get_or_create(name = 'Discípulo')
