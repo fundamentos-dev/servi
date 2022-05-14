@@ -1,5 +1,4 @@
 from app.core import models
-from app.core.permissions import PermissaoMixin
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
@@ -7,7 +6,7 @@ from django.http import Http404
 
 
 @admin.register(models.Pessoa)
-class PessoaAdmin(admin.ModelAdmin, PermissaoMixin):
+class PessoaAdmin(admin.ModelAdmin):
     list_display = ('id', 'email', 'nome', 'data_nascimento', 'discipulo_vinculado', 'apelido', 'data_vinculacao_igreja_local', \
                     'data_afastamento', 'sexo')
     fields = ('email', 'nome', 'apelido', 'data_vinculacao_igreja_local', \
