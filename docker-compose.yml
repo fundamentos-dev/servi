@@ -3,11 +3,11 @@ services:
   db:
     container_name: servi_db
     restart: always
-    image: postgres:13
+    image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
       - ./scripts:/usr/src
-      - ./.env:/run/desktop/mnt/host/c/filipe_final/servi/.env
+      - ./.env:/usr/src/.env  
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -21,11 +21,11 @@ services:
       - .:/usr/src/app
     environment:
       - DJANGO_SETTINGS_MODULE=app.settings
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASS=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASS=${POSTGRES_PASS}
     ports:
-      - "8000:8000"
+      - "${DJANGO_APP_PORT}:8000"
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
