@@ -46,21 +46,24 @@ class PermissaoMixin:
     permission_presbitero_diacono_geral = Permission.objects.get_or_create(codename = 'pode_ver_dados_toda_igreja',
                                         name = 'Pode ver todos os dados dos discípulos e grupo caseiro de toda igreja',
                                         content_type = ct_pessoa)
+    permission_presbitero = Permission.objects.get_or_create(codename = 'nao_pode_editar',
+                                        name = 'Não pode editar nenhum dado',
+                                        content_type = ct_pessoa)
 
     ## Criação das permissões para o model GrupoCaseiro
     permission_diaconos = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_grupo_caseiro',
                                         name = 'Pode ver e editar a tabela grupo caseiro',
                                         content_type = ct_grupo_caseiro)
     
-    # Associando grupos às permissões
-    discipulo.permissions.add(permission_discipulo)
-    auxiliar_diacono.permissions.add(permission_auxiliar_diacono)
-    lider_g_caseiro.permissions.add(permission_lider_g_caseiro)
-    diacono_bloco.permissions.add(permission_diacono_bloco,
-                                  permission_diacono_bloco_geral,
-                                  permission_diaconos)
-    diacono_geral.permissions.add(permission_presbitero_diacono_geral,
-                                  permission_diacono_bloco_geral,
-                                  permission_diaconos)
-    presbitero.permissions.add(permission_presbitero_diacono_geral)
+    # # Associando grupos às permissões
+    # discipulo.permissions.add(permission_discipulo)
+    # auxiliar_diacono.permissions.add(permission_auxiliar_diacono)
+    # lider_g_caseiro.permissions.add(permission_lider_g_caseiro)
+    # diacono_bloco.permissions.add(permission_diacono_bloco,
+    #                               permission_diacono_bloco_geral,
+    #                               permission_diaconos)
+    # diacono_geral.permissions.add(permission_presbitero_diacono_geral,
+    #                               permission_diacono_bloco_geral,
+    #                               permission_diaconos)
+    # presbitero.permissions.add(permission_presbitero_diacono_geral)
   

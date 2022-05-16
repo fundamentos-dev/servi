@@ -1,17 +1,19 @@
+#from types import NoneType
+import re
+
 from app.core import models
-from app.core.permissions import PermissaoMixin
 from django.contrib import admin
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.forms import ModelForm
 from django.http import Http404
 
 
 @admin.register(models.Pessoa)
-class PessoaAdmin(admin.ModelAdmin, PermissaoMixin):
+class PessoaAdmin(admin.ModelAdmin):
     list_display = ('id', 'email', 'nome', 'data_nascimento', 'discipulo_vinculado', 'apelido', 'data_vinculacao_igreja_local', \
                     'data_afastamento', 'sexo')
     fields = ('email', 'nome', 'apelido', 'data_vinculacao_igreja_local', \
-                    'data_afastamento', 'sexo', 'estado_civil',)
+                    'data_afastamento', 'sexo', 'estado_civil', 'grupo_caseiro')
     list_display_links = ('id', 'email', 'nome')
     search_fields = ('nome', 'email')
     
@@ -31,35 +33,52 @@ class PessoaAdmin(admin.ModelAdmin, PermissaoMixin):
         request_presbitero_diacono_geral = request.user.has_perm('pode_ver_dados_toda_igreja')
 
         ## Apresentando as informações de acordo com o tipo de usuario
-        if request_discipulo:
+        if request_discipulo and not request.user.is_superuser:
             return qs.filter(email = request.user.email)
-        elif request_lider_g_caseiro and request_auxiliar_diacono:
+        elif request_lider_g_caseiro and request_auxiliar_diacono and not request.user.is_superuser:
             return qs.filter(grupo_caseiro = request.user.grupo_caseiro)
         elif request_diacono_bloco and not request.user.is_superuser:
             return qs.filter(grupo_caseiro__bloco_id = request.user.grupo_caseiro.bloco.id)
         return qs.all()
     
-    def change_view(self, request, obj=None, **kwargs):
+    
+    def get_form(self, request, obj=None, **kwargs):
         ## Formulário para editar pessoas
-        form = super().change_view(request, obj, **kwargs)
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
         disabled_fields = set()  # type: Set[str]
         
         ## Validando os campos de acordo com as permissões
-        if request.user.has_perm('pode_ver_editar_proprios_dados'):
-            self.fields = self.fields + ('pai', 'mae')
+        if request.user.has_perm('pode_ver_editar_proprios_dados') and not request.user.is_superuser:
+            if not 'pai' in self.fields:
+                self.fields = self.fields + ('pai', 'mae')
             disabled_fields |= {
                 'nivel',
                 'funcao',
                 'grupo_caseiro',
                 'data_afastamento',
                 'motivo_afastamento',
-                'data_vinculacao_igreja_local',
-                
+                'data_vinculacao_igreja_local',  
             }
+        elif request.user.has_perm('pode_ver_discipulos_grupo_caseiro') and request.user.has_perm('nao_pode_editar') and not request.user.is_authenticated:
+            raise PermissionDenied()
         elif request.user.has_perm('pode_editar_proprio_bloco'):
-            disabled_fields |= {
-                'grupo_caseiro',
-            }
+            filtro = list(qs.filter(grupo_caseiro__bloco_id = request.user.grupo_caseiro.bloco.id))
+            url = str(request.get_full_path)
+            id_form = int(re.sub('[^0-9]', '', url))
+            controle = False
+            for pessoa in filtro:
+                id = pessoa.id
+                if id_form == id:
+                    controle = True
+            if controle:
+                disabled_fields |= {
+                    'nome', 
+                }
+            else:
+                raise PermissionDenied()
+
+            
             
         ## Criando laço para pecorrer os campos desabiltados
         for f in disabled_fields:
@@ -67,6 +86,7 @@ class PessoaAdmin(admin.ModelAdmin, PermissaoMixin):
                 form.base_fields[f].disabled = True
 
         return form
+
 
 @admin.register(models.MotivoAfastamento)
 class MotivoAfastmentoAdmin(admin.ModelAdmin):
