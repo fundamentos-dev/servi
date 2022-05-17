@@ -63,7 +63,8 @@ class PessoaAdmin(admin.ModelAdmin):
         elif request.user.has_perm('pode_ver_discipulos_grupo_caseiro') and request.user.has_perm('nao_pode_editar') and not request.user.is_authenticated:
             raise PermissionDenied()
         elif request.user.has_perm('pode_editar_proprio_bloco'):
-            filtro = list(qs.filter(grupo_caseiro__bloco_id = request.user.grupo_caseiro.bloco.id))
+            if request.user.grupo_caseiro.bloco.id:
+                filtro = list(qs.filter(grupo_caseiro__bloco_id = request.user.grupo_caseiro.bloco.id)) 
             url = str(request.get_full_path)
             id_form = int(re.sub('[^0-9]', '', url))
             controle = False
@@ -76,9 +77,7 @@ class PessoaAdmin(admin.ModelAdmin):
                     'nome', 
                 }
             else:
-                raise PermissionDenied()
-
-            
+                raise PermissionDenied()         
             
         ## Criando laço para pecorrer os campos desabiltados
         for f in disabled_fields:
@@ -116,9 +115,23 @@ class BlocoAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.GrupoCaseiro)
-class IgrejaCasaAdmin(admin.ModelAdmin):
-    pass
+class GrupoCaseiroAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome', 'bloco')
+    fields = ('id', 'nome', 'bloco')
+    list_display_links = ('id', 'nome', 'bloco')
+    search_fields = ('id', 'nome', 'bloco')
+    
+    
+    #def __init__(self, *args, **kwargs):
 
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_grupo_caseiro'):
+            return qs.filter(bloco_id = request.user.grupo_caseiro)
+
+        raise PermissionDenied()
 
 
 @admin.register(models.Localidade)
