@@ -33,11 +33,11 @@ class PessoaAdmin(admin.ModelAdmin):
         request_presbitero_diacono_geral = request.user.has_perm('pode_ver_dados_toda_igreja')
 
         ## Apresentando as informações de acordo com o tipo de usuario
-        if request_discipulo and not request.user.is_superuser:
+        if request_discipulo:
             return qs.filter(email = request.user.email)
-        elif request_lider_g_caseiro and request_auxiliar_diacono and not request.user.is_superuser:
+        elif request_lider_g_caseiro and request_auxiliar_diacono:
             return qs.filter(grupo_caseiro = request.user.grupo_caseiro)
-        elif request_diacono_bloco and not request.user.is_superuser:
+        elif request_diacono_bloco:
             return qs.filter(grupo_caseiro__bloco_id = request.user.grupo_caseiro.bloco.id)
         return qs.all()
     
@@ -49,7 +49,7 @@ class PessoaAdmin(admin.ModelAdmin):
         disabled_fields = set()  # type: Set[str]
         
         ## Validando os campos de acordo com as permissões
-        if request.user.has_perm('pode_ver_editar_proprios_dados') and not request.user.is_superuser:
+        if request.user.has_perm('pode_ver_editar_proprios_dados'):
             if not 'pai' in self.fields:
                 self.fields = self.fields + ('pai', 'mae')
             disabled_fields |= {
@@ -77,7 +77,7 @@ class PessoaAdmin(admin.ModelAdmin):
                     'nome', 
                 }
             else:
-                raise PermissionDenied()         
+                raise Http404()         
             
         ## Criando laço para pecorrer os campos desabiltados
         for f in disabled_fields:
@@ -89,28 +89,143 @@ class PessoaAdmin(admin.ModelAdmin):
 
 @admin.register(models.MotivoAfastamento)
 class MotivoAfastmentoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome',)
+    fields = ('nome',)
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_motivo_afastamento'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_motivo_afastamento'):
+            raise Http404()
+        
+        return form
 
 
 @admin.register(models.OrigemDiscipulo)
 class OrigemDiscipuloAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome',)
+    fields = ('nome',)
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_origem_discipulo'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_origem_discipulo'):
+            raise Http404()
+        
+        return form
 
 
 @admin.register(models.Profissao)
 class ProfissaoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome',)
+    fields = ('nome',)
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_profissao'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_profissao'):
+            raise Http404()
+        
+        return form
 
 
 @admin.register(models.EstadoCivil)
 class EstadoCivilAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome',)
+    fields = ('nome',)
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_estado_civil'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_estado_civil'):
+            raise Http404()
+        
+        return form
 
 
 
 @admin.register(models.Bloco)
 class BlocoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome',)
+    fields = ('nome',)
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_bloco'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_bloco'):
+            raise Http404()
+        
+        return form
 
 
 
@@ -136,38 +251,224 @@ class GrupoCaseiroAdmin(admin.ModelAdmin):
 
 @admin.register(models.Localidade)
 class LocalidadeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome',)
+    fields = ('nome',)
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_localidade'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_localidade'):
+            raise Http404()
+        
+        return form
 
 
 @admin.register(models.Funcao)
 class FuncaoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome',)
+    fields = ('nome',)
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_funcao'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_funcao'):
+            raise Http404()
+        
+        return form
 
 
 @admin.register(models.NivelServico)
 class NivelServicoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome',)
+    fields = ('nome',)
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_nivel_servico'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_nivel_servico'):
+            raise Http404()
+        
+        return form
 
 
 @admin.register(models.Permissao)
 class PermissaoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nome', 'descricao')
+    fields = ('nome', 'descricao')
+    list_display_links = ('nome',)
+    search_fields = ('nome',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_permissao'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_permissao'):
+            raise Http404()
+        
+        return form
 
 
 @admin.register(models.PessoaPermissao)
 class PessoaPermissaoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pessoa', 'permissao')
+    fields = ('pessoa', 'permissao')
+    list_display_links = ('pessoa', 'permissao')
+    search_fields = ('pessoa', 'permissao')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_pessoa_permissao'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_pessoa_permissao'):
+            raise Http404()
+        
+        return form
+
 
 
 @admin.register(models.Conjugue)
 class ConjugueAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('marido', 'esposa')
+    fields = ('marido', 'esposa')
+    list_display_links = ('marido', 'esposa')
+    search_fields = ('marido', 'esposa')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_conjugue'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_conjugue'):
+            raise Http404()
+        
+        return form
+
 
 @admin.register(models.JuntaDiscipulado)
 class JuntaDiscipuladoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('discipulador', 'discipulo')
+    fields = ('discipulador', 'discipulo')
+    list_display_links = ('discipulador', 'discipulo')
+    search_fields = ('discipulador', 'discipulo')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_junta_discipulado'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_junta_discipulado'):
+            raise Http404()
+        
+        return form
 
 
 @admin.register(models.Telefone)
 class TelefoneAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pessoa', 'numero', 'descricao')
+    fields = ('pessoa', 'numero', 'esposa')
+    list_display_links = ('pessoa', 'numero', 'descricao')
+    search_fields = ('pessoa', 'numero', 'descricao')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        ## Apresentando as informações de acordo com o tipo de usuario
+        if request.user.has_perm('pode_ver_editar_tabela_telefone'):
+            return qs.all()
+        else:
+            raise Http404()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        ## Formulário para editar pessoas
+        qs = super().get_queryset(request)
+        form = super().get_form(request, obj, **kwargs)
+        disabled_fields = set()  # type: Set[str]
+        
+        ## Validando os campos de acordo com as permissões
+        if not request.user.has_perm('pode_ver_editar_tabela_telefone'):
+            raise Http404()
+        
+        return form
