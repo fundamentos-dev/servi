@@ -1,0 +1,32 @@
+- model: core.NivelServico
+  pk: 1
+  fields:
+    nome: Em fundamentos
+- model: core.NivelServico
+  pk: 2
+  fields:
+    nome: Início de Serviço
+- model: core.NivelServico
+  pk: 3
+  fields:
+    nome: Desenvolvendo o Serviço
+- model: core.NivelServico
+  pk: 4
+  fields:
+    nome: Discipulador
+- model: core.NivelServico
+  pk: 5
+  fields:
+    nome: Núcleo do grupo caseiro
+- model: core.NivelServico
+  pk: 6
+  fields:
+    nome: Líder do grupo caseiro
+- model: core.NivelServico
+  pk: 7
+  fields:
+    nome: Núcleo do bloco
+- model: core.NivelServico
+  pk: 8
+  fields:
+    nome: Pastor/Presbítero

@@ -1,0 +1,12 @@
+- model: core.OrigemDiscipulo
+  pk: 1
+  fields:
+    nome: Converteu-se entre nós
+- model: core.OrigemDiscipulo
+  pk: 2
+  fields:
+    nome: Converteu-se entre nós, mas tinha envolvimento evangélico
+- model: core.OrigemDiscipulo
+  pk: 3
+  fields:
+    nome: Veio a nós convertido

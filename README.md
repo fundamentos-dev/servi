@@ -22,6 +22,13 @@ Acesse http://localhost:A_PORTA_QUE_VOCE_COLOCOU_EM_ENV e verá seu serviço rod
 make run
 ```
 
+Para poder popular o banco com os dados iniciais execute
+
+```bash
+make migrate
+make seed
+```
+
 ## Arquivos
 
 <a id="env"></a>

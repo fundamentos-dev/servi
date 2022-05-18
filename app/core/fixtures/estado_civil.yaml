@@ -1,0 +1,16 @@
+- model: core.EstadoCivil
+  pk: 1
+  fields:
+    nome: solteiro
+- model: core.EstadoCivil
+  pk: 2
+  fields:
+    nome: casado
+- model: core.EstadoCivil
+  pk: 3
+  fields:
+    nome: divorciado/separado
+- model: core.EstadoCivil
+  pk: 4
+  fields:
+    nome: viúvo(a)
