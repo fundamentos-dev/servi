@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'bootstrap_admin',
+    'more_admin_filters',
     'app.core',
 ]
 

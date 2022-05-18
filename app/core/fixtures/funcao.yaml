@@ -14,3 +14,7 @@
   pk: 4
   fields:
     nome: Presbítero
+- model: core.Funcao
+  pk: 5
+  fields:
+    nome: Administrador

@@ -154,7 +154,7 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     estado_civil = models.ForeignKey(EstadoCivil, verbose_name = 'Estado civil', related_name = 'estado_civil', on_delete = models.CASCADE, null = True, blank = True)
     grupo_caseiro = models.ForeignKey(GrupoCaseiro, verbose_name = 'Grupo caseiro', related_name = 'grupo_caseiro', on_delete = models.CASCADE, null = True, blank = True)
     localidade = models.ForeignKey(Localidade, verbose_name = 'Localidade', related_name = 'localidade', on_delete = models.CASCADE, null = True, blank = True)
-    nivel = models.ForeignKey(NivelServico, verbose_name = 'Nível do servico', related_name = 'nivel', on_delete = models.CASCADE, null = True, blank =True)
+    nivel_servico = models.ForeignKey(NivelServico, verbose_name = 'Nível do servico', related_name = 'nivel', on_delete = models.CASCADE, null = True, blank =True)
     motivo_afastamento = models.ForeignKey(MotivoAfastamento, verbose_name = 'Motivo do afastamento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null = True, blank = True)
     origem = models.ForeignKey(OrigemDiscipulo, verbose_name = 'Origem do discípulo', related_name = 'origem', on_delete = models.CASCADE, null = True, blank = True)
     profissao = models.ForeignKey(Profissao, verbose_name = 'Profissão', related_name = 'profissao', on_delete = models.CASCADE, null = True, blank = True)

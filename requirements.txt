@@ -4,3 +4,4 @@ python-dotenv
 django-extensions
 bootstrap-admin
 pyyaml
+django-more-admin-filters
