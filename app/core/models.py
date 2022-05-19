@@ -174,31 +174,6 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
         verbose_name = 'Pessoa'
         #unique_together = ('nome', 'data_nascimento')
 
-
-class Permissao(models.Model):
-    nome = models.CharField('Permissão', max_length=256)
-    descricao = models.CharField('Descrição da permissão', max_length=256)
-
-    def __str__(self):
-        return f'{self.nome}'
-
-    class Meta:
-        verbose_name = 'Permissão'
-        verbose_name_plural = 'Permissões'
-
-
-class PessoaPermissao(models.Model):
-    pessoa = models.ForeignKey('Pessoa', related_name='pessoas',
-                               on_delete=models.CASCADE, blank=True, null=True)
-    permissao = models.ForeignKey('Pessoa', related_name='permissao',
-                                  on_delete=models.CASCADE, blank=True, null=True)
-
-    class Meta:
-        verbose_name = 'Permissão da pessoa'
-        verbose_name_plural = 'Permissões das pessoas'
-        unique_together = ('pessoa', 'permissao')
-
-
 class Conjugue(models.Model):
     marido = models.OneToOneField('Pessoa', related_name='marido',
                                   on_delete=models.CASCADE)

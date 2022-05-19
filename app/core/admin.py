@@ -337,63 +337,6 @@ class NivelServicoAdmin(admin.ModelAdmin):
 
         return form
 
-
-@admin.register(models.Permissao)
-class PermissaoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'descricao')
-    fields = ('nome', 'descricao')
-    list_display_links = ('nome',)
-    search_fields = ('nome',)
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        # Apresentando as informações de acordo com o tipo de usuario
-        if request.user.has_perm('pode_ver_editar_tabela_permissao'):
-            return qs.all()
-        else:
-            raise Http404()
-
-    def get_form(self, request, obj=None, **kwargs):
-        # Formulário para editar pessoas
-        qs = super().get_queryset(request)
-        form = super().get_form(request, obj, **kwargs)
-        disabled_fields = set()  # type: Set[str]
-
-        # Validando os campos de acordo com as permissões
-        if not request.user.has_perm('pode_ver_editar_tabela_permissao'):
-            raise Http404()
-
-        return form
-
-
-@admin.register(models.PessoaPermissao)
-class PessoaPermissaoAdmin(admin.ModelAdmin):
-    list_display = ('pessoa', 'permissao')
-    fields = ('pessoa', 'permissao')
-    list_display_links = ('pessoa', 'permissao')
-    search_fields = ('pessoa', 'permissao')
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        # Apresentando as informações de acordo com o tipo de usuario
-        if request.user.has_perm('pode_ver_editar_tabela_pessoa_permissao'):
-            return qs.all()
-        else:
-            raise Http404()
-
-    def get_form(self, request, obj=None, **kwargs):
-        # Formulário para editar pessoas
-        qs = super().get_queryset(request)
-        form = super().get_form(request, obj, **kwargs)
-        disabled_fields = set()  # type: Set[str]
-
-        # Validando os campos de acordo com as permissões
-        if not request.user.has_perm('pode_ver_editar_tabela_pessoa_permissao'):
-            raise Http404()
-
-        return form
-
-
 @admin.register(models.Conjugue)
 class ConjugueAdmin(admin.ModelAdmin):
     list_display = ('marido', 'esposa')

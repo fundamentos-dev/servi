@@ -27,6 +27,7 @@ seed:
 		python manage.py loaddata funcao.yaml && \
 		python manage.py loaddata motivo_afastamento.yaml && \
 		python manage.py loaddata nivel_servico.yaml && \
+		python manage.py loaddata profissao.yaml && \
 		python manage.py loaddata origem_discipulo.yaml"
 	docker exec -it servi_app bash -c "python manage.py shell < app/seed.py"	
 connect:

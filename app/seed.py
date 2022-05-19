@@ -59,3 +59,16 @@ lider.save()
 discipulo.save()
 auxiliar_diacono.save()
 administrador.save()
+
+from app.core import models
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
+
+discipulo, created = Group.objects.get_or_create(name = 'Discípulo')
+
+ct_pessoa = ContentType.objects.get_for_model(models.Pessoa)
+
+permission_discipulo = Permission.objects.get_or_create(codename = 'pode_ver_editar_proprios_dados',
+                                    name = 'Pode ver e editar os próprios dados',
+                                    content_type = ct_pessoa)
+discipulo.permissions.add(permission_discipulo)
