@@ -64,11 +64,14 @@ from app.core import models
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
-discipulo, created = Group.objects.get_or_create(name = 'Discípulo')
+# Criando grupos de permissões
+g_discipulo, _ = Group.objects.get_or_create(name="Discípulo")
 
+# Criando content types para colocar nas permissões
 ct_pessoa = ContentType.objects.get_for_model(models.Pessoa)
 
-permission_discipulo = Permission.objects.get_or_create(codename = 'pode_ver_editar_proprios_dados',
-                                    name = 'Pode ver e editar os próprios dados',
-                                    content_type = ct_pessoa)
-discipulo.permissions.add(permission_discipulo)
+# Criando permissões
+p_discipulo, _ = Permission.objects.get_or_create(codename = "pode_ver_editar_proprios_dados", name="Pode ver e editar os próprios dados", content_type = ct_pessoa)
+
+# Atribuindo permissões a grupos
+g_discipulo.permissions.add(p_discipulo.id)
