@@ -1,4 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -8,9 +9,17 @@ class PessoaManager(BaseUserManager):
     """
 
     def save(self, *args, **kwargs):
+        g_lider_caseiro = Group.objects.get(name='Lider do gurpo caseiro')
+        g_presbitero = Group.objects.get(name='Presbítero')
+        g_discipulo = Group.objects.get(name='Discípulo')
         if not self.pk:
-            # TODO Aqui devemos verificar o nível de serviço do usuário e atribuir a ele alguma permissão/grupo caso isso lhe seja necessário, claro que devemos mudar a condicional
-            print("Sendo salvo pela primeira vez")
+            raise ValueError(_('error'))
+        if self.nivel_servico.nome == 'Líder do grupo caseiro':
+            print('ENTROUUUU')
+            g_lider_caseiro.user_set.add(self.pk)
+        elif self.nivel_servico.id == 8:
+            g_presbitero.user_set.add(self.pk)
+        print("Sendo salvo pela primeira vez")
         super().save(*args, **kwargs)
 
     def create_user(self, email, password=None, **extra_fields):

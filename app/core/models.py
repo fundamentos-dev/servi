@@ -164,6 +164,8 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
+    
+    
 
     objects = PessoaManager()
 
