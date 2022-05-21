@@ -8,10 +8,11 @@ class PessoaManager(BaseUserManager):
     Custom user model manager 
     """
 
-    def save(self, *args, **kwargs):
+    def save_model(self, *args, **kwargs):
         g_lider_caseiro = Group.objects.get(name='Lider do gurpo caseiro')
         g_presbitero = Group.objects.get(name='Presbítero')
         g_discipulo = Group.objects.get(name='Discípulo')
+        print('Saveeeee')
         if not self.pk:
             raise ValueError(_('error'))
         if self.nivel_servico.nome == 'Líder do grupo caseiro':

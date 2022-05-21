@@ -1,9 +1,11 @@
 # Adicionando usuários de teste
-from django.contrib.auth.models import Group, Permission
-from app.core import models
-from django.contrib.auth import get_user_model
-from app.core.models import Bloco, Funcao, GrupoCaseiro, NivelServico
 import datetime
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, Permission
+
+from app.core import models
+from app.core.models import Bloco, Funcao, GrupoCaseiro, NivelServico
 
 # Selecionando Nível de Serviço
 nivel_servico_lider = NivelServico.objects.get(id=6)
@@ -60,14 +62,12 @@ discipulo.save()
 auxiliar_diacono.save()
 administrador.save()
 
-from app.core import models
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
 from app.core import models
-from django.contrib.auth.models import Group, Permission
-from django.contrib.contenttypes.models import ContentType
 
+## Criação dos grupos 
 g_discipulo, _ = Group.objects.get_or_create(name = 'Discípulo')
 g_lider_g_caseiro, _ = Group.objects.get_or_create(name = 'Lider do gurpo caseiro')
 g_auxiliar_diacono, _ = Group.objects.get_or_create(name = 'Auxiliar diácono')
@@ -76,7 +76,7 @@ g_diacono_geral, _ = Group.objects.get_or_create(name = 'Diácono geral')
 g_presbitero, _ = Group.objects.get_or_create(name = 'Presbítero')
 g_administrador, _ = Group.objects.get_or_create(name = 'Administrador')
 
-## Criação dos ContentTypes que estão sendo utilizados
+## Criação dos ContentTypes
 ct_pessoa = ContentType.objects.get_for_model(models.Pessoa)
 ct_grupo_caseiro = ContentType.objects.get_for_model(models.GrupoCaseiro)
 ct_motivo_afastamento = ContentType.objects.get_for_model(models.MotivoAfastamento)
@@ -93,111 +93,161 @@ ct_telefone = ContentType.objects.get_for_model(models.Telefone)
 
 
 ## Criação das permissões para o model Pessoa
-p_discipulo, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_proprios_dados',
-                                    name = 'Pode ver e editar os próprios dados',
+p_self_pessoa, _ = Permission.objects.get_or_create(codename = 'view_self_pessoa',
+                                    name = 'Pode ver próprio dado',
                                     content_type = ct_pessoa)
-p_auxiliar_diacono, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_discipulos_grupo_caseiro',
-                                    name = 'Pode ver e editar os díscipulos do seu grupo caseiro',
-                                    content_type = ct_pessoa)
-p_lider_g_caseiro, _ = Permission.objects.get_or_create(codename = 'pode_ver_discipulos_grupo_caseiro',
-                                    name = 'Pode ver os díscipulos do seu grupo caseiro',
-                                    content_type = ct_pessoa)
-p_diacono_bloco, _ = Permission.objects.get_or_create(codename = 'pode_ver_proprio_bloco',
-                                    name = 'Pode ver os díscipulos e grupo caseiro do seu bloco',
+p_funcao_pessoa, _ = Permission.objects.get_or_create(codename = 'cannot_change_funcao_pessoa',
+                                    name = 'Não pode editar função',
                                     content_type = ct_pessoa)
 
-p_diacono_bloco_geral, _ = Permission.objects.get_or_create(codename = 'pode_editar_proprio_bloco',
-                                    name = 'Pode editar os díscipulos e grupo caseiro do seu bloco',
+p_grupocaseiro_pessoa_view, _ = Permission.objects.get_or_create(codename = 'view_grupocaseiro_pessoa',
+                                    name = 'Pode ver grupo caseiro',
+                                    content_type = ct_pessoa)
+p_grupocaseiro_pessoa_change, _ = Permission.objects.get_or_create(codename = 'change_grupocaseiro_pessoa',
+                                    name = 'Pode editar grupo caseiro',
                                     content_type = ct_pessoa)
 
-p_presbitero_diacono_geral, _ = Permission.objects.get_or_create(codename = 'pode_ver_dados_toda_igreja',
-                                    name = 'Pode ver todos os dados dos discípulos e grupo caseiro de toda igreja',
+p_grupocaseiro_bloco_pessoa_view, _ = Permission.objects.get_or_create(codename = 'view_grupocaseiro_bloco_pessoa',
+                                    name = 'Pode ver grupos caseiros do mesmo bloco',
+                                    content_type = ct_pessoa)
+p_grupocaseiro_bloco_pessoa_change, _ = Permission.objects.get_or_create(codename = 'change_grupocaseiro_bloco_pessoa',
+                                    name = 'Pode editar grupos caseiros do mesmo bloco',
                                     content_type = ct_pessoa)
 
-## Criação das permissões para o model GrupoCaseiro
-p_diaconos, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_grupo_caseiro',
-                                    name = 'Pode ver e editar a tabela grupo caseiro',
-                                    content_type = ct_grupo_caseiro)
 
+p_pessoa_add = Permission.objects.get(codename = 'add_pessoa',
+                                       content_type = ct_pessoa)
+p_pessoa_change = Permission.objects.get(codename = 'change_pessoa',
+                                       content_type = ct_pessoa)
+p_pessoa_view = Permission.objects.get(codename = 'view_pessoa',
+                                       content_type = ct_pessoa)
+
+# Criação das permissões para o model GrupoCaseiro
+p_grupo_caseiro_add = Permission.objects.get(codename = 'add_grupocaseiro',
+                                                content_type = ct_grupo_caseiro)
+p_grupo_caseiro_change = Permission.objects.get(codename = 'change_grupocaseiro',
+                                                content_type = ct_grupo_caseiro)
+p_grupo_caseiro_view = Permission.objects.get(codename = 'view_grupocaseiro',
+                                                content_type = ct_grupo_caseiro)
 
 ## Criação das permissões para o model MotivoAfastamento
-p_motivo_afastamento, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_motivo_afastamento',
-                                    name = 'Pode ver e editar a tabela motivo do afastamento',
-                                    content_type = ct_motivo_afastamento)
-
+p_motivo_afastamento_add = Permission.objects.get(codename = 'add_motivoafastamento',
+                                       content_type = ct_motivo_afastamento)
+p_motivo_afastamento_change = Permission.objects.get(codename = 'change_motivoafastamento',
+                                       content_type = ct_motivo_afastamento)
+p_motivo_afastamento_view = Permission.objects.get(codename = 'view_motivoafastamento',
+                                       content_type = ct_motivo_afastamento)
 
 ## Criação das permissões para o model OrigemDiscipulo
-p_origem_discipulo, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_origem_discipulo',
-                                    name = 'Pode ver e editar a tabela origem do discípulo',
-                                    content_type = ct_origem_discipulo)
-
+p_origem_discipulo_add = Permission.objects.get(codename = 'add_origemdiscipulo',
+                                       content_type = ct_origem_discipulo)
+p_origem_discipulo_change = Permission.objects.get(codename = 'change_origemdiscipulo',
+                                       content_type = ct_origem_discipulo)
+p_origem_discipulo_view = Permission.objects.get(codename = 'view_origemdiscipulo',
+                                       content_type = ct_origem_discipulo)
 
 ## Criação das permissões para o model Profissao
-p_profissao, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_profissao',
-                                    name = 'Pode ver e editar a tabela profissão',
-                                    content_type = ct_profissao)
-
+p_profissao_add = Permission.objects.get(codename = 'add_profissao',
+                                       content_type = ct_profissao)
+p_profissao_change = Permission.objects.get(codename = 'change_profissao',
+                                       content_type = ct_profissao)
+p_profissao = Permission.objects.get(codename = 'view_profissao',
+                                       content_type = ct_profissao)
 
 ## Criação das permissões para o model EstadoCivil
-p_estado_civil, _= Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_estado_civil',
-                                    name = 'Pode ver e editar a tabela estado civil',
-                                    content_type = ct_estado_civil)
-
+p_estado_civil_add= Permission.objects.get(codename = 'add_estadocivil',
+                                       content_type = ct_estado_civil)
+p_estado_civil_change= Permission.objects.get(codename = 'change_estadocivil',
+                                       content_type = ct_estado_civil)
+p_estado_civil_view= Permission.objects.get(codename = 'view_estadocivil',
+                                       content_type = ct_estado_civil)
 
 ## Criação das permissões para o model Bloco
-p_bloco, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_bloco',
-                                    name = 'Pode ver e editar a tabela bloco',
-                                    content_type = ct_bloco)
-
+p_bloco_add = Permission.objects.get(codename = 'add_bloco',
+                                       content_type = ct_bloco)
+p_bloco_change = Permission.objects.get(codename = 'change_bloco',
+                                       content_type = ct_bloco)
+p_bloco_view = Permission.objects.get(codename = 'view_bloco',
+                                       content_type = ct_bloco)
 
 ## Criação das permissões para o model Localidade
-p_localidade, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_localidade',
-                                    name = 'Pode ver e editar a tabela localidade',
-                                    content_type = ct_localidade)
-
+p_localidade_add = Permission.objects.get(codename = 'add_localidade',
+                                       content_type = ct_localidade)
+p_localidade_change = Permission.objects.get(codename = 'change_localidade',
+                                       content_type = ct_localidade)
+p_localidade_view = Permission.objects.get(codename = 'view_localidade',
+                                       content_type = ct_localidade)
 
 ## Criação das permissões para o model Funcao
-p_funcao, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_funcao',
-                                    name = 'Pode ver e editar a tabela função',
-                                    content_type = ct_funcao)
-
+p_funcao_add = Permission.objects.get(codename = 'add_funcao',
+                                       content_type = ct_funcao)
+p_funcao_change = Permission.objects.get(codename = 'change_funcao',
+                                       content_type = ct_funcao)
+p_funcao_view = Permission.objects.get(codename = 'view_funcao',
+                                       content_type = ct_funcao)
 
 ## Criação das permissões para o model NivelServico
-p_nivel_servico, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_nivel_servico',
-                                    name = 'Pode ver e editar a tabela nível serviço',
-                                    content_type = ct_nivel_servico)
-
+p_nivel_servico_add = Permission.objects.get(codename = 'add_nivelservico',
+                                       content_type = ct_nivel_servico)
+p_nivel_servico_change = Permission.objects.get(codename = 'change_nivelservico',
+                                       content_type = ct_nivel_servico)
+p_nivel_servico_view = Permission.objects.get(codename = 'view_nivelservico',
+                                       content_type = ct_nivel_servico)
 
 ## Criação das permissões para o model Conjugue
-p_conjugue, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_conjugue',
-                                    name = 'Pode ver e editar a tabela conjugue',
-                                    content_type = ct_conjugue)
-
+p_conjugue_add = Permission.objects.get(codename = 'add_conjugue',
+                                       content_type = ct_conjugue)
+p_conjugue_change = Permission.objects.get(codename = 'change_conjugue',
+                                       content_type = ct_conjugue)
+p_conjugue_view = Permission.objects.get(codename = 'view_conjugue',
+                                       content_type = ct_conjugue)
 
 ## Criação das permissões para o model JuntaDiscipulado
-p_junta_discipulado, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_junta_discipulado',
-                                    name = 'Pode ver e editar a tabela junta discipulado',
-                                    content_type = ct_junta_discipulado)
-
+p_junta_discipulado_add = Permission.objects.get(codename = 'add_juntadiscipulado',
+                                       content_type = ct_junta_discipulado)
+p_junta_discipulado_change = Permission.objects.get(codename = 'change_juntadiscipulado',
+                                       content_type = ct_junta_discipulado)
+p_junta_discipulado_view = Permission.objects.get(codename = 'view_juntadiscipulado',
+                                       content_type = ct_junta_discipulado)
 
 ## Criação das permissões para o model Telefone
-p_telefone, _ = Permission.objects.get_or_create(codename = 'pode_ver_editar_tabela_telefone',
-                                    name = 'Pode ver e editar a tabela telefone',
-                                    content_type = ct_telefone)
-
-
+p_telefone_add = Permission.objects.get(codename = 'add_telefone',
+                                       content_type = ct_telefone)
+p_telefone_change = Permission.objects.get(codename = 'change_telefone',
+                                       content_type = ct_telefone)
+p_telefone_view = Permission.objects.get(codename = 'view_telefone',
+                                       content_type = ct_telefone)
 
 # Associando grupos às permissões
-g_discipulo.permissions.add(p_discipulo)
-g_auxiliar_diacono.permissions.add(p_auxiliar_diacono)
-g_lider_g_caseiro.permissions.add(p_lider_g_caseiro)
-g_diacono_bloco.permissions.add(p_diacono_bloco,
-                                p_diacono_bloco_geral,
-                                p_diaconos)
-g_diacono_geral.permissions.add(p_presbitero_diacono_geral,
-                                p_diacono_bloco_geral,
-                                p_diaconos)
-g_presbitero.permissions.add(p_presbitero_diacono_geral)
+g_discipulo.permissions.add(p_funcao_pessoa, p_self_pessoa, p_pessoa_view, p_pessoa_change)
+
+g_auxiliar_diacono.permissions.add(p_grupocaseiro_pessoa_view, p_grupocaseiro_pessoa_change, p_pessoa_view, p_pessoa_change, p_pessoa_add)
+
+g_lider_g_caseiro.permissions.add(p_grupocaseiro_pessoa_view, p_pessoa_view)
+
+g_diacono_bloco.permissions.add(p_grupocaseiro_bloco_pessoa_view, p_grupocaseiro_bloco_pessoa_change, p_pessoa_view, p_pessoa_change, p_pessoa_add)
+
+g_diacono_geral.permissions.add(p_pessoa_view, p_grupo_caseiro_add, p_grupocaseiro_pessoa_change, p_pessoa_change, p_pessoa_add, p_grupo_caseiro_change, p_grupo_caseiro_view)
+
+g_presbitero.permissions.add(p_pessoa_view)
+
+g_administrador.permissions.add(p_pessoa_add, p_pessoa_change, p_pessoa_view, p_grupo_caseiro_add, p_grupo_caseiro_change, p_grupo_caseiro_view, p_motivo_afastamento_add, p_motivo_afastamento_change, p_motivo_afastamento_view, p_origem_discipulo_view, p_origem_discipulo_add, p_origem_discipulo_change, p_profissao_add, p_profissao_change, p_profissao, p_estado_civil_add, p_estado_civil_change, p_estado_civil_view, p_bloco_add, p_bloco_change, p_bloco_view, p_localidade_add, p_localidade_change, p_localidade_view, p_funcao_add, p_funcao_change, p_funcao_view, p_nivel_servico_add, p_nivel_servico_change, p_nivel_servico_view, p_conjugue_add, p_conjugue_change, p_conjugue_view, p_junta_discipulado_add, p_junta_discipulado_change, p_junta_discipulado_view, p_telefone_add, p_telefone_change, p_telefone_view)
+
 
 # Associando usuários aos groups
 g_discipulo.user_set.add(discipulo)
+g_lider_g_caseiro.user_set.add(lider)
+g_auxiliar_diacono.user_set.add(auxiliar_diacono)
+g_diacono_bloco.user_set.add(diacono_bloco)
+g_diacono_geral.user_set.add(diacono_geral)
+g_presbitero.user_set.add(presbitero)
+g_administrador.user_set.add(administrador)
+
+
+
+
+
+
+
+
+

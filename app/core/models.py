@@ -72,7 +72,7 @@ class GrupoCaseiro(models.Model):
         'Bloco', related_name='grupo_caseiro', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.nome}"
+        return f"{self.nome} - {self.bloco}"
 
     class Meta:
         verbose_name = 'Grupo caseiro'
@@ -147,9 +147,6 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     ===============
     '''
     
-    ## Variável 'grupo' está sendo utilizada para teste
-    ## Por algum motivo o campo padrão para escolher o grupo, não permite atribuir o grupo
-    grupo = models.ForeignKey(Group, verbose_name = 'Grupo', related_name = 'grupo', on_delete = models.CASCADE, null = True, blank = True)
     funcao = models.ForeignKey(Funcao, verbose_name = 'Função', related_name = 'funcao', on_delete = models.CASCADE, null = True, blank = True)
     estado_civil = models.ForeignKey(EstadoCivil, verbose_name = 'Estado civil', related_name = 'estado_civil', on_delete = models.CASCADE, null = True, blank = True)
     grupo_caseiro = models.ForeignKey(GrupoCaseiro, verbose_name = 'Grupo caseiro', related_name = 'grupo_caseiro', on_delete = models.CASCADE, null = True, blank = True)
