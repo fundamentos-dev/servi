@@ -3,11 +3,11 @@ import re
 
 from app.core import models
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.forms import ModelForm
 from django.http import Http404
 from more_admin_filters import MultiSelectRelatedFilter
-
 
 '''
 ===============
@@ -65,6 +65,34 @@ class PessoaAdmin(admin.ModelAdmin):
         elif request.user.has_perm('core.view_grupocaseiro_bloco_pessoa') and not request.user.is_superuser:
             return qs.filter(grupo_caseiro__bloco_id=request.user.grupo_caseiro.bloco.id)
         return qs.all()
+
+    ## Editando o método save_model
+    def save_model(self, request, obj, form, change):
+        obj.added_by = request.user
+        super().save_model(request, obj, form, change)
+        ## Atribuindo o obejeto de cada grupo a uma variável
+        g_lider_caseiro = Group.objects.get(name='Lider do gurpo caseiro')
+        g_presbitero = Group.objects.get(name='Presbítero')
+        g_discipulo = Group.objects.get(name='Discípulo')
+        g_auxiliar_diacono = Group.objects.get_or_create(name = 'Auxiliar diácono')
+        g_diacono_bloco = Group.objects.get_or_create(name = 'Diácono bloco')
+        g_diacono_geral = Group.objects.get_or_create(name = 'Diácono geral')
+        g_administrador = Group.objects.get_or_create(name = 'Administrador')
+
+        ## Testanando qual o nível de serviço/função do usuário adicionado e atribuindo o grupo dinamicamente
+        if obj.nivel_servico.id == 6:
+            g_lider_caseiro.user_set.add(obj)
+        elif obj.nivel_servico.id == 8 and obj.funcao.id == 4:
+            g_presbitero.user_set.add(obj)
+        elif obj.funcao.id == 1:
+            g_auxiliar_diacono.user_set.add(obj)
+        elif obj.funcao.id == 2:
+            g_diacono_bloco.user_set.add(obj)
+        elif obj.funcao.id == 3:
+            g_diacono_geral.user_set.add(obj)
+        elif obj.funcao.id == 5:
+            g_administrador.user_set.add(obj)
+        
 
 
     ## Criando regras para edição de regristros de acordo com as permissões
