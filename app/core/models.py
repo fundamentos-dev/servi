@@ -158,7 +158,8 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     pai = models.ForeignKey('self', verbose_name = 'Pai', related_name = 'pessoa_pai', on_delete = models.CASCADE, null = True, blank = True)
     mae = models.ForeignKey('self', verbose_name = 'Mãe', related_name = 'pessoa_mae', on_delete = models.CASCADE, null = True, blank = True)
     companheiros = models.ManyToManyField('self', verbose_name = 'Companheiros', related_name = 'companheiros', blank = True)
-
+    # conjugue = models.ForeignKey('self', verbose_name = 'Cônjugue', related_name = 'conjugue', on_delete = models.CASCADE, null = True, blank = True)
+    # mae = models.ForeignKey('self', verbose_name = 'Mãe', related_name = 'pessoa_mae', on_delete = models.CASCADE, null = True, blank = True)
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
     
@@ -174,23 +175,25 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
         #unique_together = ('nome', 'data_nascimento')
 
 class Conjugue(models.Model):
-    marido = models.OneToOneField('Pessoa', related_name='marido',
-                                  on_delete=models.CASCADE)
-    esposa = models.OneToOneField('Pessoa', related_name='esposa',
+    conjugue_form = models.OneToOneField('Pessoa', related_name='conjugue_form',
                                   on_delete=models.CASCADE)
 
+    conjugue = models.OneToOneField('Pessoa', related_name='conjugue',
+                                  on_delete=models.CASCADE)
     class Meta:
         verbose_name = 'Cônjugue'
 
 class JuntaDiscipulado(models.Model):
-    discipulador = models.ForeignKey(
-        'Pessoa', related_name='discipulador', on_delete=models.CASCADE)
-    discipulo = models.ForeignKey(
-        'Pessoa', related_name='discipulo', on_delete=models.CASCADE)
+    junta_discipulado_form = models.OneToOneField('Pessoa', related_name='junta_discipulado_form',
+                                  on_delete=models.CASCADE)
+
+    junta_discipulado = models.ForeignKey(
+        'Pessoa', related_name='junta_discipulado', on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'Discipulado'
-        unique_together = ('discipulador', 'discipulo')
+        verbose_name = 'Junta discipulado'
+        unique_together = ('junta_discipulado_form', 'junta_discipulado')
+
 
 
 class Telefone(models.Model):

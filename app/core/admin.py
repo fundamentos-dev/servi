@@ -22,25 +22,27 @@ class PessoaInline(admin.TabularInline):
 class GrupoCaseiroInline(admin.TabularInline):
     model = models.GrupoCaseiro
 
-class MaridoInline(admin.TabularInline):
+class ConjugueInline(admin.TabularInline):
     model = models.Conjugue
-    list_display = ['marido', 'esposa']
-    fields = ['marido', 'esposa']
-    raw_id_fields = ['marido', 'esposa']  
-    fk_name = 'marido'    
+    list_display = ['conjugue']
+    fields = ['conjugue']
+    raw_id_fields = ['conjugue']
+    inlines = [PessoaInline]  
+    fk_name = 'conjugue_form'
     
-class EsposaInline(admin.TabularInline):
-    model = models.Conjugue
-    list_display = ['marido', 'esposa']
-    fields = ['marido', 'esposa']
-    raw_id_fields = ['marido', 'esposa']  
-    fk_name = 'esposa'  
 
 class JuntaDiscipuladoInline(admin.TabularInline):
-    model = models.JuntaDiscipulado   
+    model = models.JuntaDiscipulado
+    list_display = ['junta_discipulado']
+    fields = ['junta_discipulado']
+    raw_id_fields = ['junta_discipulado'] 
+    inlines = [PessoaInline] 
+    fk_name = 'junta_discipulado_form'
+      
     
 class TelefoneInline(admin.TabularInline):
     model = models.Telefone    
+    extra = 1
     
     
     '''
@@ -60,7 +62,7 @@ class PessoaAdmin(admin.ModelAdmin):
     list_filter = [('estado_civil', MultiSelectRelatedFilter), ('nivel_servico', MultiSelectRelatedFilter), 'grupo_caseiro']
     raw_id_fields = ['pai', 'mae', 'companheiros']  
     inlines = [
-        TelefoneInline
+        TelefoneInline, JuntaDiscipuladoInline
     ]
 
     ## Criando regras para visualização de registro de acordo com as permissões
@@ -94,7 +96,7 @@ class PessoaAdmin(admin.ModelAdmin):
                 g_lider_caseiro.user_set.add(obj)
             elif obj.nivel_servico.id == 8 and obj.funcao.id == 4:
                 g_presbitero.user_set.add(obj)
-        if obj.funcao is not None:
+        elif obj.funcao is not None:
             print(obj.funcao.id)
             if obj.funcao.id == 1:
                 g_auxiliar_diacono.user_set.add(obj)
@@ -105,7 +107,10 @@ class PessoaAdmin(admin.ModelAdmin):
             elif obj.funcao.id == 5:
                 g_administrador.user_set.add(obj)
             else:
-                g_discipulo.user_set.add(obj)
+                g_discipulo.user_set.add(obj)   
+        if obj.discipulo_vinculado:
+            g_discipulo.user_set.add(obj)
+            
 
     ## Criando regras para edição de regristros de acordo com as permissões
     def get_form(self, request, obj=None, **kwargs):
@@ -113,25 +118,24 @@ class PessoaAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         form = super().get_form(request, obj, **kwargs)
         disabled_fields = set()  # type: Set[str]
-        
-        if obj.estado_civil.id == 2:
-            if obj.sexo == "M":
-                if not MaridoInline in self.inlines:
-                    self.inlines.append(MaridoInline)
+        if obj.estado_civil.id is not None:
+            if obj.estado_civil.id == 2:
+                if not ConjugueInline in self.inlines:
+                        self.inlines.append(ConjugueInline)
             else:
-                if not EsposaInline in self.inlines:
-                    self.inlines.append(EsposaInline)
+                if ConjugueInline in self.inlines:
+                        del(self.inlines[3])
         
         if obj.data_afastamento is None:
             if 'motivo_afastamento' in self.fields:
                 del(self.fields[18])
         else:
             if not 'motivo_afastamento' in self.fields:
-                self.fields.insert(18, 'motivo_afastamento')
+                self.fields.append('motivo_afastamento')
 
         if obj.data_vinculacao_igreja_local is not None:
             if not 'discipulo_vinculado' in self.fields:
-                self.fields.insert(16,'discipulo_vinculado')
+                self.fields.append('discipulo_vinculado')
         else:
             if 'discipulo_vinculado' in self.fields:
                 del(self.fields[16])
@@ -239,9 +243,7 @@ class NivelServicoAdmin(admin.ModelAdmin):
     ]
 @admin.register(models.Conjugue)
 class ConjugueAdmin(admin.ModelAdmin):
-    list_display = ['marido', 'esposa']
-    fields = ['marido', 'esposa']
-    raw_id_fields = ['marido', 'esposa']  
+    pass
 
 @admin.register(models.JuntaDiscipulado)
 class JuntaDiscipuladoAdmin(admin.ModelAdmin):

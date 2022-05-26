@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 
 from app.core import models
-from app.core.models import Bloco, Funcao, GrupoCaseiro, NivelServico
+from app.core.models import Bloco, Funcao, GrupoCaseiro, NivelServico, EstadoCivil
 
 # Selecionando Nível de Serviço
 nivel_servico_lider = NivelServico.objects.get(id=6)
@@ -18,6 +18,14 @@ funcao_diacono_geral = Funcao.objects.get(id=3)
 funcao_presbitero = Funcao.objects.get(id=4)
 funcao_administrador = Funcao.objects.get(id=5)
 
+# Selecionando Estado Civil
+estado_civil_solteiro = EstadoCivil.objects.get(id=1)
+estado_civil_casado = EstadoCivil.objects.get(id=2)
+estado_civil_divorciado = EstadoCivil.objects.get(id=3)
+
+
+
+
 # Selecionando Bloco para teste
 bloco = Bloco.objects.get(id=1)
 
@@ -25,24 +33,24 @@ bloco = Bloco.objects.get(id=1)
 grupo_caseiro, _ = GrupoCaseiro.objects.get_or_create(nome="Grupo Caseiro de Teste", bloco=bloco)
 
 # Declarando variáveis de uso comum
-birthdate = datetime.date(1995, 11, 1)
+date = datetime.date(1995, 11, 1)
 User = get_user_model()
 
 # Criando usuários de teste
-presbitero, _ = User.objects.get_or_create(nome="Presbítero de Teste", email="presbitero@teste.br", data_nascimento=birthdate, is_staff=True, is_active=True,
-     grupo_caseiro=grupo_caseiro, nivel_servico=nivel_servico_presbitero, funcao=funcao_presbitero)
+presbitero, _ = User.objects.get_or_create(nome="Presbítero de Teste", email="presbitero@teste.br", data_nascimento=date, is_staff=True, is_active=True,
+     grupo_caseiro=grupo_caseiro, nivel_servico=nivel_servico_presbitero, funcao=funcao_presbitero, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date)
 diacono_bloco, _ = User.objects.get_or_create(nome="Diácono Local de Teste", email="diaconolocal@teste.br",
-     data_nascimento=birthdate, is_staff=True, is_active=True, funcao=funcao_diacono_bloco)
+     data_nascimento=date, is_staff=True, is_active=True, funcao=funcao_diacono_bloco, estado_civil=estado_civil_casado, data_vinculacao_igreja_local=date)
 diacono_geral, _ = User.objects.get_or_create(nome="Diácono Geral de Teste", email="diaconogeral@teste.br",
-     data_nascimento=birthdate, is_staff=True, is_active=True, funcao=funcao_diacono_geral)
-lider, _ = User.objects.get_or_create(nome="Líder de Teste", email="lider@teste.br", data_nascimento=birthdate,
-     is_staff=True, is_active=True, nivel_servico=nivel_servico_lider)
+     data_nascimento=date, is_staff=True, is_active=True, funcao=funcao_diacono_geral, estado_civil=estado_civil_casado)
+lider, _ = User.objects.get_or_create(nome="Líder de Teste", email="lider@teste.br", data_nascimento=date,
+     is_staff=True, is_active=True, nivel_servico=nivel_servico_lider, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date)
 discipulo, _ = User.objects.get_or_create(nome="Discípulo de Teste", email="discipulo@teste.br",
-     data_nascimento=birthdate, is_staff=True, is_active=True)
+     data_nascimento=date, is_staff=True, is_active=True, estado_civil=estado_civil_casado)
 auxiliar_diacono, _ = User.objects.get_or_create(nome="Auxiliar de Diácono de Teste", email="auxiliardiacono@teste.br",
-     data_nascimento=birthdate, is_staff=True, is_active=True, funcao=funcao_auxiliar_diacono)
+     data_nascimento=date, is_staff=True, is_active=True, funcao=funcao_auxiliar_diacono, estado_civil=estado_civil_divorciado, data_vinculacao_igreja_local=date)
 administrador, _ = User.objects.get_or_create(nome="Administrador", email="administrador@teste.br",
-     data_nascimento=birthdate, is_staff=True, is_active=True, funcao=funcao_administrador)
+     data_nascimento=date, is_staff=True, is_active=True, funcao=funcao_administrador, estado_civil=estado_civil_divorciado)
 
 # Atribuindo senha comum aos usuários de teste
 presbitero.set_password("passw@rd")
