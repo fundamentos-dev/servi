@@ -26,8 +26,7 @@ class ConjugueInline(admin.TabularInline):
     model = models.Conjugue
     list_display = ['conjugue']
     fields = ['conjugue']
-    raw_id_fields = ['conjugue']
-    inlines = [PessoaInline]  
+    raw_id_fields = ['conjugue']  
     fk_name = 'conjugue_form'
     
 
@@ -36,7 +35,6 @@ class JuntaDiscipuladoInline(admin.TabularInline):
     list_display = ['junta_discipulado']
     fields = ['junta_discipulado']
     raw_id_fields = ['junta_discipulado'] 
-    inlines = [PessoaInline] 
     fk_name = 'junta_discipulado_form'
       
     
