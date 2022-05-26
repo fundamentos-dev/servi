@@ -22,13 +22,22 @@ class PessoaInline(admin.TabularInline):
 class GrupoCaseiroInline(admin.TabularInline):
     model = models.GrupoCaseiro
 
-class ConjugueInline(admin.TabularInline):
+class MaridoInline(admin.TabularInline):
     model = models.Conjugue
+    list_display = ['marido', 'esposa']
+    fields = ['marido', 'esposa']
+    raw_id_fields = ['marido', 'esposa']  
+    fk_name = 'marido'    
     
+class EsposaInline(admin.TabularInline):
+    model = models.Conjugue
+    list_display = ['marido', 'esposa']
+    fields = ['marido', 'esposa']
+    raw_id_fields = ['marido', 'esposa']  
+    fk_name = 'esposa'  
 
 class JuntaDiscipuladoInline(admin.TabularInline):
-    model = models.JuntaDiscipulado
-    
+    model = models.JuntaDiscipulado   
     
 class TelefoneInline(admin.TabularInline):
     model = models.Telefone    
@@ -42,22 +51,22 @@ class TelefoneInline(admin.TabularInline):
 @admin.register(models.Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
     ## Populando campos padrões do admin
-    list_display = ('id', 'email', 'nome', 'data_nascimento', 'discipulo_vinculado', 'apelido', 'data_vinculacao_igreja_local',
-                    'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'motivo_afastamento', 'origem', 'profissao', 'pai', 'mae')
-    fields = ('email', 'nome', 'password', 'discipulo_vinculado', 'apelido', 'data_vinculacao_igreja_local',
-                    'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'motivo_afastamento', 'origem', 'profissao', 'pai', 'mae', 'companheiros')
+    list_display = ('id', 'email', 'nome', 'data_nascimento', 'apelido', 'discipulo_vinculado', 'data_vinculacao_igreja_local',
+                    'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae')
+    fields = ['email', 'nome', 'password', 'apelido', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'companheiros','data_vinculacao_igreja_local', 'discipulo_vinculado', 'data_afastamento', 'motivo_afastamento']
     list_display_links = ('id', 'email', 'nome')
     search_fields = ('nome', 'email')
     # https://github.com/thomst/django-more-admin-filters
     list_filter = [('estado_civil', MultiSelectRelatedFilter), ('nivel_servico', MultiSelectRelatedFilter), 'grupo_caseiro']
-    inline = [
-        TelefoneInline, JuntaDiscipuladoInline, ConjugueInline
+    raw_id_fields = ['pai', 'mae', 'companheiros']  
+    inlines = [
+        TelefoneInline
     ]
 
     ## Criando regras para visualização de registro de acordo com as permissões
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        # Apresentando as informações de acordo com o tipo de usuario
+        # Apresentando as informações de acordo com o tipo de usuário        
         if request.user.has_perm('core.view_self_pessoa') and not request.user.is_superuser:
             return qs.filter(email=request.user.email)
         elif request.user.has_perm('core.view_grupocaseiro_pessoa') and not request.user.is_superuser:
@@ -74,26 +83,29 @@ class PessoaAdmin(admin.ModelAdmin):
         g_lider_caseiro = Group.objects.get(name='Lider do gurpo caseiro')
         g_presbitero = Group.objects.get(name='Presbítero')
         g_discipulo = Group.objects.get(name='Discípulo')
-        g_auxiliar_diacono = Group.objects.get_or_create(name = 'Auxiliar diácono')
-        g_diacono_bloco = Group.objects.get_or_create(name = 'Diácono bloco')
-        g_diacono_geral = Group.objects.get_or_create(name = 'Diácono geral')
-        g_administrador = Group.objects.get_or_create(name = 'Administrador')
-
-        ## Testanando qual o nível de serviço/função do usuário adicionado e atribuindo o grupo dinamicamente
-        if obj.nivel_servico.id == 6:
-            g_lider_caseiro.user_set.add(obj)
-        elif obj.nivel_servico.id == 8 and obj.funcao.id == 4:
-            g_presbitero.user_set.add(obj)
-        elif obj.funcao.id == 1:
-            g_auxiliar_diacono.user_set.add(obj)
-        elif obj.funcao.id == 2:
-            g_diacono_bloco.user_set.add(obj)
-        elif obj.funcao.id == 3:
-            g_diacono_geral.user_set.add(obj)
-        elif obj.funcao.id == 5:
-            g_administrador.user_set.add(obj)
+        g_auxiliar_diacono = Group.objects.get(name = 'Auxiliar diácono')
+        g_diacono_bloco = Group.objects.get(name = 'Diácono bloco')
+        g_diacono_geral = Group.objects.get(name = 'Diácono geral')
+        g_administrador = Group.objects.get(name = 'Administrador')
         
-
+        ## Testanando qual o nível de serviço/função do usuário adicionado e atribuindo o grupo dinamicamente
+        if obj.nivel_servico is not None:
+            if obj.nivel_servico.id == 6:
+                g_lider_caseiro.user_set.add(obj)
+            elif obj.nivel_servico.id == 8 and obj.funcao.id == 4:
+                g_presbitero.user_set.add(obj)
+        if obj.funcao is not None:
+            print(obj.funcao.id)
+            if obj.funcao.id == 1:
+                g_auxiliar_diacono.user_set.add(obj)
+            elif obj.funcao.id == 2:
+                g_diacono_bloco.user_set.add(obj)
+            elif obj.funcao.id == 3:
+                g_diacono_geral.user_set.add(obj)
+            elif obj.funcao.id == 5:
+                g_administrador.user_set.add(obj)
+            else:
+                g_discipulo.user_set.add(obj)
 
     ## Criando regras para edição de regristros de acordo com as permissões
     def get_form(self, request, obj=None, **kwargs):
@@ -101,7 +113,31 @@ class PessoaAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         form = super().get_form(request, obj, **kwargs)
         disabled_fields = set()  # type: Set[str]
+        
+        if obj.estado_civil.id == 2:
+            if obj.sexo == "M":
+                if not MaridoInline in self.inlines:
+                    self.inlines.append(MaridoInline)
+            else:
+                if not EsposaInline in self.inlines:
+                    self.inlines.append(EsposaInline)
+        
+        if obj.data_afastamento is None:
+            if 'motivo_afastamento' in self.fields:
+                del(self.fields[18])
+        else:
+            if not 'motivo_afastamento' in self.fields:
+                self.fields.insert(18, 'motivo_afastamento')
 
+        if obj.data_vinculacao_igreja_local is not None:
+            if not 'discipulo_vinculado' in self.fields:
+                self.fields.insert(16,'discipulo_vinculado')
+        else:
+            if 'discipulo_vinculado' in self.fields:
+                del(self.fields[16])
+        
+        
+        
         # Validando os campos de acordo com as permissões
         if request.user.has_perm('core.cannot_change_funcao_pessoa') and not request.user.is_superuser:
             disabled_fields |= {
@@ -203,8 +239,9 @@ class NivelServicoAdmin(admin.ModelAdmin):
     ]
 @admin.register(models.Conjugue)
 class ConjugueAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ['marido', 'esposa']
+    fields = ['marido', 'esposa']
+    raw_id_fields = ['marido', 'esposa']  
 
 @admin.register(models.JuntaDiscipulado)
 class JuntaDiscipuladoAdmin(admin.ModelAdmin):
