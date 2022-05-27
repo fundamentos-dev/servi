@@ -95,8 +95,6 @@ ct_bloco = ContentType.objects.get_for_model(models.Bloco)
 ct_localidade = ContentType.objects.get_for_model(models.Localidade)
 ct_funcao = ContentType.objects.get_for_model(models.Funcao)
 ct_nivel_servico = ContentType.objects.get_for_model(models.NivelServico)
-ct_conjugue = ContentType.objects.get_for_model(models.Conjugue)
-ct_junta_discipulado = ContentType.objects.get_for_model(models.JuntaDiscipulado)
 ct_telefone = ContentType.objects.get_for_model(models.Telefone)
 
 
@@ -202,22 +200,6 @@ p_nivel_servico_change = Permission.objects.get(codename = 'change_nivelservico'
 p_nivel_servico_view = Permission.objects.get(codename = 'view_nivelservico',
                                        content_type = ct_nivel_servico)
 
-## Criação das permissões para o model Conjugue
-p_conjugue_add = Permission.objects.get(codename = 'add_conjugue',
-                                       content_type = ct_conjugue)
-p_conjugue_change = Permission.objects.get(codename = 'change_conjugue',
-                                       content_type = ct_conjugue)
-p_conjugue_view = Permission.objects.get(codename = 'view_conjugue',
-                                       content_type = ct_conjugue)
-
-## Criação das permissões para o model JuntaDiscipulado
-p_junta_discipulado_add = Permission.objects.get(codename = 'add_juntadiscipulado',
-                                       content_type = ct_junta_discipulado)
-p_junta_discipulado_change = Permission.objects.get(codename = 'change_juntadiscipulado',
-                                       content_type = ct_junta_discipulado)
-p_junta_discipulado_view = Permission.objects.get(codename = 'view_juntadiscipulado',
-                                       content_type = ct_junta_discipulado)
-
 ## Criação das permissões para o model Telefone
 p_telefone_add = Permission.objects.get(codename = 'add_telefone',
                                        content_type = ct_telefone)
@@ -239,7 +221,7 @@ g_diacono_geral.permissions.add(p_pessoa_view, p_grupo_caseiro_add, p_grupocasei
 
 g_presbitero.permissions.add(p_pessoa_view)
 
-g_administrador.permissions.add(p_pessoa_add, p_pessoa_change, p_pessoa_view, p_grupo_caseiro_add, p_grupo_caseiro_change, p_grupo_caseiro_view, p_motivo_afastamento_add, p_motivo_afastamento_change, p_motivo_afastamento_view, p_origem_discipulo_view, p_origem_discipulo_add, p_origem_discipulo_change, p_profissao_add, p_profissao_change, p_profissao, p_estado_civil_add, p_estado_civil_change, p_estado_civil_view, p_bloco_add, p_bloco_change, p_bloco_view, p_localidade_add, p_localidade_change, p_localidade_view, p_funcao_add, p_funcao_change, p_funcao_view, p_nivel_servico_add, p_nivel_servico_change, p_nivel_servico_view, p_conjugue_add, p_conjugue_change, p_conjugue_view, p_junta_discipulado_add, p_junta_discipulado_change, p_junta_discipulado_view, p_telefone_add, p_telefone_change, p_telefone_view)
+g_administrador.permissions.add(p_pessoa_add, p_pessoa_change, p_pessoa_view, p_grupo_caseiro_add, p_grupo_caseiro_change, p_grupo_caseiro_view, p_motivo_afastamento_add, p_motivo_afastamento_change, p_motivo_afastamento_view, p_origem_discipulo_view, p_origem_discipulo_add, p_origem_discipulo_change, p_profissao_add, p_profissao_change, p_profissao, p_estado_civil_add, p_estado_civil_change, p_estado_civil_view, p_bloco_add, p_bloco_change, p_bloco_view, p_localidade_add, p_localidade_change, p_localidade_view, p_funcao_add, p_funcao_change, p_funcao_view, p_nivel_servico_add, p_nivel_servico_change, p_nivel_servico_view, p_telefone_add, p_telefone_change, p_telefone_view)
 
 
 # Associando usuários aos groups

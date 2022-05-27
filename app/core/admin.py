@@ -22,27 +22,11 @@ class PessoaInline(admin.TabularInline):
 class GrupoCaseiroInline(admin.TabularInline):
     model = models.GrupoCaseiro
 
-class ConjugueInline(admin.TabularInline):
-    model = models.Conjugue
-    list_display = ['conjugue']
-    fields = ['conjugue']
-    raw_id_fields = ['conjugue']  
-    fk_name = 'conjugue_form'
-    
-
-class JuntaDiscipuladoInline(admin.TabularInline):
-    model = models.JuntaDiscipulado
-    list_display = ['junta_discipulado']
-    fields = ['junta_discipulado']
-    raw_id_fields = ['junta_discipulado'] 
-    fk_name = 'junta_discipulado_form'
-      
     
 class TelefoneInline(admin.TabularInline):
     model = models.Telefone    
     extra = 1
-    
-    
+        
     '''
     ===============
     Registrando Admin
@@ -52,15 +36,15 @@ class TelefoneInline(admin.TabularInline):
 class PessoaAdmin(admin.ModelAdmin):
     ## Populando campos padrões do admin
     list_display = ('id', 'email', 'nome', 'data_nascimento', 'apelido', 'discipulo_vinculado', 'data_vinculacao_igreja_local',
-                    'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae')
-    fields = ['email', 'nome', 'password', 'apelido', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'companheiros','data_vinculacao_igreja_local', 'discipulo_vinculado', 'data_afastamento', 'motivo_afastamento']
+                    'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'conjugue')
+    fields = ('email', 'nome', 'password', 'apelido', 'sexo', 'funcao', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'companheiros', 'data_vinculacao_igreja_local', 'data_afastamento', 'estado_civil')
     list_display_links = ('id', 'email', 'nome')
     search_fields = ('nome', 'email')
     # https://github.com/thomst/django-more-admin-filters
     list_filter = [('estado_civil', MultiSelectRelatedFilter), ('nivel_servico', MultiSelectRelatedFilter), 'grupo_caseiro']
-    raw_id_fields = ['pai', 'mae', 'companheiros']  
+    raw_id_fields = ['pai', 'mae', 'companheiros', 'conjugue']  
     inlines = [
-        TelefoneInline, JuntaDiscipuladoInline
+        TelefoneInline
     ]
 
     ## Criando regras para visualização de registro de acordo com as permissões
@@ -116,29 +100,19 @@ class PessoaAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         form = super().get_form(request, obj, **kwargs)
         disabled_fields = set()  # type: Set[str]
-        if obj.estado_civil.id is not None:
-            if obj.estado_civil.id == 2:
-                if not ConjugueInline in self.inlines:
-                        self.inlines.append(ConjugueInline)
-            else:
-                if ConjugueInline in self.inlines:
-                        del(self.inlines[3])
         
-        if obj.data_afastamento is None:
-            if 'motivo_afastamento' in self.fields:
-                del(self.fields[18])
-        else:
-            if not 'motivo_afastamento' in self.fields:
-                self.fields.append('motivo_afastamento')
+        if obj.estado_civil is not None:
+            if obj.estado_civil.id == 2:
+                if not 'conjugue' in self.fields:
+                    self.fields = self.fields + ('conjugue',)
 
         if obj.data_vinculacao_igreja_local is not None:
             if not 'discipulo_vinculado' in self.fields:
-                self.fields.append('discipulo_vinculado')
-        else:
-            if 'discipulo_vinculado' in self.fields:
-                del(self.fields[16])
-        
-        
+                self.fields = self.fields + ('discipulo_vinculado',)
+    
+        if obj.data_afastamento is not None:
+            if not 'motivo_afastamento' in self.fields:
+                self.fields = self.fields + ('motivo_afastamento',)
         
         # Validando os campos de acordo com as permissões
         if request.user.has_perm('core.cannot_change_funcao_pessoa') and not request.user.is_superuser:
@@ -239,15 +213,7 @@ class NivelServicoAdmin(admin.ModelAdmin):
      inlines = [
         PessoaInline,
     ]
-@admin.register(models.Conjugue)
-class ConjugueAdmin(admin.ModelAdmin):
-    pass
-
-@admin.register(models.JuntaDiscipulado)
-class JuntaDiscipuladoAdmin(admin.ModelAdmin):
-    pass
-
-
+     
 @admin.register(models.Telefone)
 class TelefoneAdmin(admin.ModelAdmin):
     pass
