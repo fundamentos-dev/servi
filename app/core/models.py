@@ -158,6 +158,7 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     pai = models.ForeignKey('self', verbose_name = 'Pai', related_name = 'pessoa_pai', on_delete = models.CASCADE, null = True, blank = True)
     mae = models.ForeignKey('self', verbose_name = 'Mãe', related_name = 'pessoa_mae', on_delete = models.CASCADE, null = True, blank = True)
     companheiros = models.ManyToManyField('self', verbose_name = 'Companheiros', related_name = 'companheiros', blank = True)
+    discipuladores = models.ManyToManyField('self', verbose_name = 'Discipuladores', related_name = 'discipuladores', blank = True)
     conjugue = models.ForeignKey('self', verbose_name = 'Cônjugue', related_name = 'pessoa_conjugue', on_delete = models.CASCADE, null = True, blank = True)
    
    
