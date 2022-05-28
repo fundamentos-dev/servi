@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True, verbose_name='Está ativo?')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Data de Cadastro')),
                 ('companheiros', models.ManyToManyField(blank=True, related_name='_pessoa_companheiros_+', to=settings.AUTH_USER_MODEL, verbose_name='Companheiros')),
-                ('conjugue', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='pessoa_conjugue', to=settings.AUTH_USER_MODEL, verbose_name='Cônjugue')),
+                ('conjuge', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='conjuge', to=settings.AUTH_USER_MODEL, verbose_name='Cônjugue')),
             ],
             options={
                 'verbose_name': 'Pessoa',
