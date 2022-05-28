@@ -164,58 +164,13 @@ class PessoaAdmin(admin.ModelAdmin):
 
         return form
 
-
-@admin.register(models.MotivoAfastamento)
-class MotivoAfastmentoAdmin(admin.ModelAdmin):
-    inline = [
-        PessoaInline,
-    ]
-
-
-@admin.register(models.OrigemDiscipulo)
-class OrigemDiscipuloAdmin(admin.ModelAdmin):
-    inline = [
-        PessoaInline,
-    ]
-
-
-@admin.register(models.Profissao)
-class ProfissaoAdmin(admin.ModelAdmin):
-    inlines = [
-        PessoaInline,
-    ]
-
-
+admin.site.register(models.MotivoAfastamento)
+admin.site.register(models.OrigemDiscipulo)
+admin.site.register(models.Profissao)
 admin.site.register(models.EstadoCivil)
 admin.site.register(models.GrupoCaseiro)
-
-@admin.register(models.Bloco)
-class BlocoAdmin(admin.ModelAdmin):
-    inlines = [
-        GrupoCaseiroInline,
-    ]
-
-
-@admin.register(models.Localidade)
-class LocalidadeAdmin(admin.ModelAdmin):
-    inlines = [
-        PessoaInline,
-    ]
-
-
-@admin.register(models.Funcao)
-class FuncaoAdmin(admin.ModelAdmin):
-    inlines = [
-        PessoaInline,
-    ]
-
-
-@admin.register(models.NivelServico)
-class NivelServicoAdmin(admin.ModelAdmin):
-    inlines = [
-        PessoaInline,
-    ]
-
-@admin.register(models.Telefone)
-class TelefoneAdmin(admin.ModelAdmin):
-    pass
+admin.site.register(models.Bloco)
+admin.site.register(models.Localidade)
+admin.site.register(models.Funcao)
+admin.site.register(models.NivelServico)
+admin.site.register(models.Telefone)
