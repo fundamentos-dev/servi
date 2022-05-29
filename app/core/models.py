@@ -117,8 +117,7 @@ class NivelServico(models.Model):
 class Pessoa(AbstractBaseUser, PermissionsMixin):
     SEXO_CHOICES = (
         ("F", "Feminino"),
-        ("M", "Masculino"),
-        ("N", "Nenhuma das opções")
+        ("M", "Masculino")
     )
 
     email = models.EmailField('Endereço de email', unique=True)
@@ -149,7 +148,7 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     
     funcao = models.ForeignKey(Funcao, verbose_name = 'Função', related_name = 'funcao', on_delete = models.CASCADE, null = True, blank = True)
     estado_civil = models.ForeignKey(EstadoCivil, verbose_name = 'Estado civil', related_name = 'estado_civil', on_delete = models.CASCADE, null = True, blank = True)
-    grupo_caseiro = models.ForeignKey(GrupoCaseiro, verbose_name = 'Grupo caseiro', related_name = 'grupo_caseiro', on_delete = models.CASCADE, null = True, blank = True)
+    grupo_caseiro = models.ForeignKey(GrupoCaseiro, verbose_name = 'Grupo caseiro', related_name = 'pessoas', on_delete = models.CASCADE, null = True, blank = True)
     localidade = models.ForeignKey(Localidade, verbose_name = 'Localidade', related_name = 'localidade', on_delete = models.CASCADE, null = True, blank = True)
     nivel_servico = models.ForeignKey(NivelServico, verbose_name = 'Nível do servico', related_name = 'nivel', on_delete = models.CASCADE, null = True, blank =True)
     motivo_afastamento = models.ForeignKey(MotivoAfastamento, verbose_name = 'Motivo do afastamento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null = True, blank = True)
@@ -158,7 +157,8 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     pai = models.ForeignKey('self', verbose_name = 'Pai', related_name = 'pessoa_pai', on_delete = models.CASCADE, null = True, blank = True)
     mae = models.ForeignKey('self', verbose_name = 'Mãe', related_name = 'pessoa_mae', on_delete = models.CASCADE, null = True, blank = True)
     companheiros = models.ManyToManyField('self', verbose_name = 'Companheiros', related_name = 'companheiros', blank = True)
-    conjugue = models.ForeignKey('self', verbose_name = 'Cônjugue', related_name = 'pessoa_conjugue', on_delete = models.CASCADE, null = True, blank = True)
+    discipuladores = models.ManyToManyField('self', verbose_name = 'Discipuladores', related_name = 'discipuladores', blank = True)
+    conjuge = models.ForeignKey('self', verbose_name = 'Cônjugue', related_name = 'pessoa_conjuge', on_delete = models.CASCADE, null = True, blank = True)
    
    
     EMAIL_FIELD = 'email'
