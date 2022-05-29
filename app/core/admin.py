@@ -37,7 +37,7 @@ class PessoaAdmin(admin.ModelAdmin):
     ## Populando campos padrões do admin
     list_display = ('id', 'email', 'nome', 'data_nascimento', 'apelido', 'discipulo_vinculado', 'data_vinculacao_igreja_local',
                     'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'conjugue')
-    fields = ('email', 'nome', 'password', 'apelido', 'sexo', 'funcao', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'companheiros', 'data_vinculacao_igreja_local', 'data_afastamento', 'estado_civil')
+    fields = ['email', 'nome', 'password', 'apelido', 'sexo', 'funcao', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'companheiros', 'data_vinculacao_igreja_local', 'data_afastamento', 'estado_civil']
     list_display_links = ('id', 'email', 'nome')
     search_fields = ('nome', 'email')
     # https://github.com/thomst/django-more-admin-filters
@@ -104,15 +104,20 @@ class PessoaAdmin(admin.ModelAdmin):
         if obj.estado_civil is not None:
             if obj.estado_civil.id == 2:
                 if not 'conjugue' in self.fields:
-                    self.fields = self.fields + ('conjugue',)
+                    self.fields.append('conjugue')
+            else:
+                if 'conjugue' in self.fields:
+                    i = fields.index('conjugue')
+                    self.fields.append(i)
+                
 
         if obj.data_vinculacao_igreja_local is not None:
             if not 'discipulo_vinculado' in self.fields:
-                self.fields = self.fields + ('discipulo_vinculado',)
+                self.fields.append('discipulo_vinculado')
     
         if obj.data_afastamento is not None:
             if not 'motivo_afastamento' in self.fields:
-                self.fields = self.fields + ('motivo_afastamento',)
+                self.fields.append('motivo_afastamento')
         
         # Validando os campos de acordo com as permissões
         if request.user.has_perm('core.cannot_change_funcao_pessoa') and not request.user.is_superuser:
