@@ -1,6 +1,5 @@
 #from types import NoneType
 import re
-
 from app.core import models
 from django.contrib import admin
 from django.contrib.auth.models import Group
@@ -8,6 +7,10 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.forms import ModelForm
 from django.http import Http404
 from more_admin_filters import MultiSelectRelatedFilter
+import csv
+from django.http import HttpResponse
+from django.core.files.storage import FileSystemStorage
+from django.template.loader import render_to_string
 
 '''
 ===============
@@ -52,6 +55,21 @@ class PessoaAdmin(admin.ModelAdmin):
     inlines = [
         TelefoneInline,
     ]
+    actions = ['download_csv']
+    
+    def download_csv(self, request, queryset):
+        with open('relatorio.csv', 'wt') as arquivo:
+            writer = csv.writer(arquivo)
+            writer.writerow(['id', 'email', 'nome', 'data_nascimento', 'apelido', 'discipulo_vinculado', 'data_vinculacao_igreja_local',
+                        'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'conjuge'])
+            for dado in queryset:
+                writer.writerow([dado.id, dado.email, dado.nome, dado.data_nascimento, dado.apelido, dado.discipulo_vinculado, dado.data_vinculacao_igreja_local, dado.data_afastamento, dado.sexo, dado.funcao, dado.estado_civil, dado.grupo_caseiro, dado.localidade, dado.nivel_servico, dado.origem, dado.profissao, dado.pai, dado.mae, dado.conjuge])    
+            
+        with open('relatorio.csv', 'r') as arquivo:
+            response = HttpResponse(arquivo, content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=relatorio.csv'
+            return response
+    download_csv.short_description = "Download CSV."
 
     # Criando regras para visualização de registro de acordo com as permissões
     def get_queryset(self, request):
