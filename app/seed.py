@@ -28,9 +28,14 @@ estado_civil_divorciado = EstadoCivil.objects.get(id=3)
 
 # Selecionando Bloco para teste
 bloco = Bloco.objects.get(id=1)
+bloco_2 = Bloco.objects.get(id=2)
+bloco_3 = Bloco.objects.get(id=3)
 
 # Criando Igreja na casa de Teste
-grupo_caseiro, _ = GrupoCaseiro.objects.get_or_create(nome="Grupo Caseiro de Teste", bloco=bloco)
+grupo_caseiro, _ = GrupoCaseiro.objects.get_or_create(nome="Grupo Caseiro de Teste 1", bloco=bloco)
+grupo_caseiro_2, _ = GrupoCaseiro.objects.get_or_create(nome="Grupo Caseiro de Teste 2", bloco=bloco_2)
+grupo_caseiro_3, _ = GrupoCaseiro.objects.get_or_create(nome="Grupo Caseiro de Teste 3", bloco=bloco_3)
+grupo_caseiro_4, _ = GrupoCaseiro.objects.get_or_create(nome="Grupo Caseiro de Teste 4", bloco=bloco)
 
 # Declarando variáveis de uso comum
 date = datetime.date(1995, 11, 1)
@@ -38,19 +43,19 @@ User = get_user_model()
 
 # Criando usuários de teste
 presbitero, _ = User.objects.get_or_create(nome="Presbítero de Teste", email="presbitero@teste.br", data_nascimento=date, is_staff=True, is_active=True,
-     grupo_caseiro=grupo_caseiro, nivel_servico=nivel_servico_presbitero, funcao=funcao_presbitero, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date)
+     grupo_caseiro=grupo_caseiro_3, nivel_servico=nivel_servico_presbitero, funcao=funcao_presbitero, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date)
 diacono_bloco, _ = User.objects.get_or_create(nome="Diácono Local de Teste", email="diaconolocal@teste.br",
-     data_nascimento=date, is_staff=True, is_active=True, funcao=funcao_diacono_bloco, estado_civil=estado_civil_casado, data_vinculacao_igreja_local=date)
+     data_nascimento=date, grupo_caseiro=grupo_caseiro_2,is_staff=True, is_active=True, funcao=funcao_diacono_bloco, estado_civil=estado_civil_casado, data_vinculacao_igreja_local=date)
 diacono_geral, _ = User.objects.get_or_create(nome="Diácono Geral de Teste", email="diaconogeral@teste.br",
-     data_nascimento=date, is_staff=True, is_active=True, funcao=funcao_diacono_geral, estado_civil=estado_civil_casado)
+     data_nascimento=date, grupo_caseiro=grupo_caseiro_3, is_staff=True, is_active=True, funcao=funcao_diacono_geral, estado_civil=estado_civil_casado)
 lider, _ = User.objects.get_or_create(nome="Líder de Teste", email="lider@teste.br", data_nascimento=date,
-     is_staff=True, is_active=True, nivel_servico=nivel_servico_lider, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date)
+     is_staff=True, is_active=True, grupo_caseiro=grupo_caseiro, nivel_servico=nivel_servico_lider, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date)
 discipulo, _ = User.objects.get_or_create(nome="Discípulo de Teste", email="discipulo@teste.br",
-     data_nascimento=date, is_staff=True, is_active=True, estado_civil=estado_civil_casado)
+     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, estado_civil=estado_civil_casado)
 auxiliar_diacono, _ = User.objects.get_or_create(nome="Auxiliar de Diácono de Teste", email="auxiliardiacono@teste.br",
-     data_nascimento=date, is_staff=True, is_active=True, funcao=funcao_auxiliar_diacono, estado_civil=estado_civil_divorciado, data_vinculacao_igreja_local=date)
+     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, funcao=funcao_auxiliar_diacono, estado_civil=estado_civil_divorciado, data_vinculacao_igreja_local=date)
 administrador, _ = User.objects.get_or_create(nome="Administrador", email="administrador@teste.br",
-     data_nascimento=date, is_staff=True, is_active=True, funcao=funcao_administrador, estado_civil=estado_civil_divorciado)
+     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, funcao=funcao_administrador, estado_civil=estado_civil_divorciado)
 
 # Atribuindo senha comum aos usuários de teste
 presbitero.set_password("passw@rd")
@@ -213,7 +218,7 @@ g_discipulo.permissions.add(p_funcao_pessoa, p_self_pessoa, p_pessoa_view, p_pes
 
 g_auxiliar_diacono.permissions.add(p_grupocaseiro_pessoa_view, p_grupocaseiro_pessoa_change, p_pessoa_view, p_pessoa_change, p_pessoa_add)
 
-g_lider_g_caseiro.permissions.add(p_grupocaseiro_pessoa_view, p_pessoa_view)
+g_lider_g_caseiro.permissions.add(p_grupocaseiro_pessoa_view, p_pessoa_view, p_grupocaseiro_pessoa_change, p_pessoa_change, p_pessoa_add)
 
 g_diacono_bloco.permissions.add(p_grupocaseiro_bloco_pessoa_view, p_grupocaseiro_bloco_pessoa_change, p_pessoa_view, p_pessoa_change, p_pessoa_add)
 

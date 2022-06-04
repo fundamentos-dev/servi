@@ -172,7 +172,7 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         verbose_name = 'Pessoa'
-        #unique_together = ('nome', 'data_nascimento')
+        unique_together = ('nome', 'data_nascimento')
 
 class Telefone(models.Model):
     numero = models.CharField('Telefone', max_length=256)
@@ -182,3 +182,13 @@ class Telefone(models.Model):
 
     class Meta:
         verbose_name = 'Telefone'
+        
+# class Filho(models.Model):
+#     filho = models.ForeignKey(
+#         'Pessoa', related_name='filho', on_delete=models.CASCADE)
+
+#     class Meta:
+#         verbose_name = 'Filho'
+
+#     def __str__(self):
+#         return f"{self.filho.nome}"
