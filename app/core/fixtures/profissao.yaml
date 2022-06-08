@@ -1,0 +1,559 @@
+- model: core.Profissao
+  pk: 1
+  fields:
+    nome: Administrador
+- model: core.Profissao
+  pk: 2
+  fields:
+    nome: Administrador público
+- model: core.Profissao
+  pk: 3
+  fields:
+    nome: Agropecuarista
+- model: core.Profissao
+  pk: 4
+  fields:
+    nome: Contabilista
+- model: core.Profissao
+  pk: 5
+  fields:
+    nome: Economista
+- model: core.Profissao
+  pk: 6
+  fields:
+    nome: Especialista em comércio exterior
+- model: core.Profissao
+  pk: 7
+  fields:
+    nome: Chef
+- model: core.Profissao
+  pk: 8
+  fields:
+    nome: Gerente comercial
+- model: core.Profissao
+  pk: 9
+  fields:
+    nome: Gestor de recursos humanos
+- model: core.Profissao
+  pk: 10
+  fields:
+    nome: Gestor de turismo
+- model: core.Profissao
+  pk: 11
+  fields:
+    nome: Gestor público
+- model: core.Profissao
+  pk: 12
+  fields:
+    nome: Hoteleiro
+- model: core.Profissao
+  pk: 13
+  fields:
+    nome: Piloto de avião
+- model: core.Profissao
+  pk: 14
+  fields:
+    nome: Turismólogo
+- model: core.Profissao
+  pk: 15
+  fields:
+    nome: Artes e Design
+- model: core.Profissao
+  pk: 16
+  fields:
+    nome: Animador
+- model: core.Profissao
+  pk: 17
+  fields:
+    nome: Arquiteto
+- model: core.Profissao
+  pk: 18
+  fields:
+    nome: Artista plástico
+- model: core.Profissao
+  pk: 19
+  fields:
+    nome: Ator
+- model: core.Profissao
+  pk: 20
+  fields:
+    nome: Dançarino
+- model: core.Profissao
+  pk: 21
+  fields:
+    nome: Designer
+- model: core.Profissao
+  pk: 22
+  fields:
+    nome: Designer de games
+- model: core.Profissao
+  pk: 23
+  fields:
+    nome: Designer de interiores
+- model: core.Profissao
+  pk: 24
+  fields:
+    nome: Designer de moda
+- model: core.Profissao
+  pk: 25
+  fields:
+    nome: Fotógrafo
+- model: core.Profissao
+  pk: 26
+  fields:
+    nome: Historiador da arte
+- model: core.Profissao
+  pk: 27
+  fields:
+    nome: Músico
+- model: core.Profissao
+  pk: 28
+  fields:
+    nome: Produtor cênico
+- model: core.Profissao
+  pk: 29
+  fields:
+    nome: Produtor fonográfico
+- model: core.Profissao
+  pk: 30
+  fields:
+    nome: Ciências Biológicas e da Terra
+- model: core.Profissao
+  pk: 31
+  fields:
+    nome: Agrônomo
+- model: core.Profissao
+  pk: 32
+  fields:
+    nome: Bioquímico
+- model: core.Profissao
+  pk: 33
+  fields:
+    nome: Biotecnólogo
+- model: core.Profissao
+  pk: 34
+  fields:
+    nome: Ecologista
+- model: core.Profissao
+  pk: 35
+  fields:
+    nome: Geofísico
+- model: core.Profissao
+  pk: 36
+  fields:
+    nome: Geólogo
+- model: core.Profissao
+  pk: 37
+  fields:
+    nome: Gestor ambiental
+- model: core.Profissao
+  pk: 38
+  fields:
+    nome: Veterinário
+- model: core.Profissao
+  pk: 39
+  fields:
+    nome: Meteorologista
+- model: core.Profissao
+  pk: 40
+  fields:
+    nome: Oceanógrafo
+- model: core.Profissao
+  pk: 41
+  fields:
+    nome: Zootecnólogo
+- model: core.Profissao
+  pk: 42
+  fields:
+    nome: Ciências Exatas e Informática
+- model: core.Profissao
+  pk: 43
+  fields:
+    nome: Analista e desenvolvedor de sistemas
+- model: core.Profissao
+  pk: 44
+  fields:
+    nome: Astrônomo
+- model: core.Profissao
+  pk: 45
+  fields:
+    nome: Cientista da computação
+- model: core.Profissao
+  pk: 46
+  fields:
+    nome: Estatístico
+- model: core.Profissao
+  pk: 47
+  fields:
+    nome: Físico
+- model: core.Profissao
+  pk: 48
+  fields:
+    nome: Gestor da tecnologia da informação
+- model: core.Profissao
+  pk: 49
+  fields:
+    nome: Matemático
+- model: core.Profissao
+  pk: 50
+  fields:
+    nome: Nanotecnólogo
+- model: core.Profissao
+  pk: 51
+  fields:
+    nome: Químico
+- model: core.Profissao
+  pk: 52
+  fields:
+    nome: Ciências Sociais e Humanas
+- model: core.Profissao
+  pk: 53
+  fields:
+    nome: Advogado
+- model: core.Profissao
+  pk: 54
+  fields:
+    nome: Arqueólogo
+- model: core.Profissao
+  pk: 55
+  fields:
+    nome: Cooperativista
+- model: core.Profissao
+  pk: 56
+  fields:
+    nome: Filósofo
+- model: core.Profissao
+  pk: 57
+  fields:
+    nome: Geógrafo
+- model: core.Profissao
+  pk: 58
+  fields:
+    nome: Historiador
+- model: core.Profissao
+  pk: 59
+  fields:
+    nome: Linguista
+- model: core.Profissao
+  pk: 60
+  fields:
+    nome: Museologista
+- model: core.Profissao
+  pk: 61
+  fields:
+    nome: Pedagogo
+- model: core.Profissao
+  pk: 62
+  fields:
+    nome: Professor
+- model: core.Profissao
+  pk: 63
+  fields:
+    nome: Psicopedagogo
+- model: core.Profissao
+  pk: 64
+  fields:
+    nome: Relações internacionais
+- model: core.Profissao
+  pk: 65
+  fields:
+    nome: Sociólogo
+- model: core.Profissao
+  pk: 66
+  fields:
+    nome: Teólogo
+- model: core.Profissao
+  pk: 67
+  fields:
+    nome: Tradutor e intérprete
+- model: core.Profissao
+  pk: 68
+  fields:
+    nome: Comunicação e Informação
+- model: core.Profissao
+  pk: 69
+  fields:
+    nome: Arquivologista
+- model: core.Profissao
+  pk: 70
+  fields:
+    nome: Biblioteconomista
+- model: core.Profissao
+  pk: 71
+  fields:
+    nome: Educomunicador
+- model: core.Profissao
+  pk: 72
+  fields:
+    nome: Jornalista
+- model: core.Profissao
+  pk: 73
+  fields:
+    nome: Produtor audiovisual
+- model: core.Profissao
+  pk: 74
+  fields:
+    nome: Produtor cultural
+- model: core.Profissao
+  pk: 75
+  fields:
+    nome: Produtor editorial
+- model: core.Profissao
+  pk: 76
+  fields:
+    nome: Produtor multimídia
+- model: core.Profissao
+  pk: 77
+  fields:
+    nome: Produtor publicitário 
+- model: core.Profissao
+  pk: 78
+  fields:
+    nome: Publicitário
+- model: core.Profissao
+  pk: 79
+  fields:
+    nome: Radialista
+- model: core.Profissao
+  pk: 80
+  fields:
+    nome: Relações públicas
+- model: core.Profissao
+  pk: 81
+  fields:
+    nome: Secretária
+- model: core.Profissao
+  pk: 82
+  fields:
+    nome: Secretária executiva
+- model: core.Profissao
+  pk: 83
+  fields:
+    nome: Engenharia e Produção
+- model: core.Profissao
+  pk: 84
+  fields:
+    nome: Agricultor
+- model: core.Profissao
+  pk: 85
+  fields:
+    nome: Construtor civil
+- model: core.Profissao
+  pk: 86
+  fields:
+    nome: Construtor naval
+- model: core.Profissao
+  pk: 87
+  fields:
+    nome: Engenheiro acústico
+- model: core.Profissao
+  pk: 88
+  fields:
+    nome: Engenheiro aeronáutico
+- model: core.Profissao
+  pk: 89
+  fields:
+    nome: Engenheiro agrícola
+- model: core.Profissao
+  pk: 90
+  fields:
+    nome: Engenheiro ambiental e sanitário
+- model: core.Profissao
+  pk: 91
+  fields:
+    nome: Engenheiro biomédico
+- model: core.Profissao
+  pk: 92
+  fields:
+    nome: Engenheiro civil
+- model: core.Profissao
+  pk: 93
+  fields:
+    nome: Engenheiro da computação
+- model: core.Profissao
+  pk: 94
+  fields:
+    nome: Engenheiro de alimentos
+- model: core.Profissao
+  pk: 95
+  fields:
+    nome: Engenheiro de biossistemas
+- model: core.Profissao
+  pk: 96
+  fields:
+    nome: Engenheiro de controle e automação
+- model: core.Profissao
+  pk: 97
+  fields:
+    nome: Engenheiro de energia
+- model: core.Profissao
+  pk: 98
+  fields:
+    nome: Engenheiro de inovação
+- model: core.Profissao
+  pk: 99
+  fields:
+    nome: Engenheiro de materiais
+- model: core.Profissao
+  pk: 100
+  fields:
+    nome: Engenheiro de minas
+- model: core.Profissao
+  pk: 101
+  fields:
+    nome: Engenheiro de pesca
+- model: core.Profissao
+  pk: 102
+  fields:
+    nome: Engenheiro de petróleo
+- model: core.Profissao
+  pk: 103
+  fields:
+    nome: Engenheiro de produção
+- model: core.Profissao
+  pk: 104
+  fields:
+    nome: Engenheiro de segurança do trabalho
+- model: core.Profissao
+  pk: 105
+  fields:
+    nome: Engenheiro de sistemas
+- model: core.Profissao
+  pk: 106
+  fields:
+    nome: Engenheiro de software
+- model: core.Profissao
+  pk: 107
+  fields:
+    nome: Engenheiro de telecomunicações
+- model: core.Profissao
+  pk: 108
+  fields:
+    nome: Engenheiro de transporte e mobilidade
+- model: core.Profissao
+  pk: 109
+  fields:
+    nome: Engenheiro elétrico
+- model: core.Profissao
+  pk: 110
+  fields:
+    nome: Engenheiro eletrônico
+- model: core.Profissao
+  pk: 111
+  fields:
+    nome: Engenheiro físico
+- model: core.Profissao
+  pk: 112
+  fields:
+    nome: Engenheiro florestal
+- model: core.Profissao
+  pk: 113
+  fields:
+    nome: Engenheiro hídrico
+- model: core.Profissao
+  pk: 114
+  fields:
+    nome: Engenheiro mecânico
+- model: core.Profissao
+  pk: 115
+  fields:
+    nome: Engenheiro mecatrônico
+- model: core.Profissao
+  pk: 116
+  fields:
+    nome: Engenheiro naval
+- model: core.Profissao
+  pk: 117
+  fields:
+    nome: Engenheiro químico
+- model: core.Profissao
+  pk: 118
+  fields:
+    nome: Gestor da qualidade
+- model: core.Profissao
+  pk: 119
+  fields:
+    nome: Minerador
+- model: core.Profissao
+  pk: 120
+  fields:
+    nome: Silvicultor
+- model: core.Profissao
+  pk: 121
+  fields:
+    nome: Saúde e Bem-Estar
+- model: core.Profissao
+  pk: 122
+  fields:
+    nome: Biomédico
+- model: core.Profissao
+  pk: 123
+  fields:
+    nome: Dentista
+- model: core.Profissao
+  pk: 124
+  fields:
+    nome: Educador físico
+- model: core.Profissao
+  pk: 125
+  fields:
+    nome: Enfermeiro
+- model: core.Profissao
+  pk: 126
+  fields:
+    nome: Esteticista
+- model: core.Profissao
+  pk: 127
+  fields:
+    nome: Farmacêutico
+- model: core.Profissao
+  pk: 128
+  fields:
+    nome: Fisioterapeuta
+- model: core.Profissao
+  pk: 129
+  fields:
+    nome: Fonoaudiólogo
+- model: core.Profissao
+  pk: 130
+  fields:
+    nome: Gerontólogo
+- model: core.Profissao
+  pk: 131
+  fields:
+    nome: Gestor em saúde
+- model: core.Profissao
+  pk: 132
+  fields:
+    nome: Gestor hospitalar
+- model: core.Profissao
+  pk: 133
+  fields:
+    nome: Ecologista
+- model: core.Profissao
+  pk: 134
+  fields:
+    nome: Médico
+- model: core.Profissao
+  pk: 135
+  fields:
+    nome: Musicoterapeuta
+- model: core.Profissao
+  pk: 136
+  fields:
+    nome: Nutricionista
+- model: core.Profissao
+  pk: 137
+  fields:
+    nome: Psicólogo
+- model: core.Profissao
+  pk: 138
+  fields:
+    nome: Radiologista
+- model: core.Profissao
+  pk: 139
+  fields:
+    nome: Terapeuta ocupacional
+
+
+

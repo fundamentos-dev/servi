@@ -18,3 +18,19 @@ migrate:
 	docker exec -it servi_app bash -c "python manage.py migrate"
 terminal:
 	docker exec -it servi_app bash
+colectstatic:
+	docker exec -it servi_app bash -c "python manage.py collectstatic"
+seed:
+	docker exec -it servi_app bash -c " \
+		python manage.py loaddata bloco.yaml && \
+		python manage.py loaddata estado_civil.yaml && \
+		python manage.py loaddata funcao.yaml && \
+		python manage.py loaddata motivo_afastamento.yaml && \
+		python manage.py loaddata nivel_servico.yaml && \
+		python manage.py loaddata profissao.yaml && \
+		python manage.py loaddata origem_discipulo.yaml"
+	docker exec -it servi_app bash -c "python manage.py shell < app/seed.py"	
+connect:
+	docker exec -it servi_db bash -c "psql -U postgres"
+
+	

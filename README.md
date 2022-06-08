@@ -22,6 +22,13 @@ Acesse http://localhost:A_PORTA_QUE_VOCE_COLOCOU_EM_ENV e verá seu serviço rod
 make run
 ```
 
+Para poder popular o banco com os dados iniciais execute
+
+```bash
+make migrate
+make seed
+```
+
 ## Arquivos
 
 <a id="env"></a>
@@ -42,3 +49,6 @@ Só funciona em linux, é útil para executar blocos de códigos juntos, sem pre
 make init
 ```
 
+## Gerando usuários e Objetos iniciais de teste
+
+Após terminado de escrever o script que gerará os usuários em `seed.py` rode o comando `make seed` para executá-lo, ou o comando que se encontra dentro do bloco `seed` do mesmo nome para Windows.

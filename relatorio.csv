@@ -1,0 +1,9 @@
+id,email,nome,data_nascimento,apelido,discipulo_vinculado,data_vinculacao_igreja_local,data_afastamento,sexo,funcao,estado_civil,grupo_caseiro,localidade,nivel_servico,origem,profissao,pai,mae,conjuge
+8,gabriella@gmail.com,,1995-11-01,,True,,,,,,,,,,,,,
+7,administrador@teste.br,Administrador,1995-11-01,,True,,,,Administrador,divorciado/separado,,,,,,,,
+6,auxiliardiacono@teste.br,Auxiliar de Diácono de Teste,1995-11-01,,True,1995-11-01,,,Aux. Diaconato no Grupo Caseiro,divorciado/separado,,,,,,,,
+5,discipulo@teste.br,Discípulo de Teste,1995-11-01,,True,,,,,casado,,,,,,,,
+4,lider@teste.br,Líder de Teste,1995-11-01,,True,1995-11-01,,,,solteiro,,,Líder do grupo caseiro,,,,,
+3,diaconogeral@teste.br,Diácono Geral de Teste,1995-11-01,,True,,,,Diácono Geral,casado,,,,,,,,
+2,diaconolocal@teste.br,Diácono Local de Teste,1995-11-01,,True,1995-11-01,,,Diácono do Bloco,casado,,,,,,,,
+1,presbitero@teste.br,Presbítero de Teste,1995-11-01,,True,1995-11-01,,,Presbítero,solteiro,Grupo Caseiro de Teste - Centro / Rio Vermelho / Brotas,,Pastor/Presbítero,,,,,

@@ -1,0 +1,36 @@
+- model: core.MotivoAfastamento
+  pk: 1
+  fields:
+    nome: Nunca entendeu o evangelho
+- model: core.MotivoAfastamento
+  pk: 2
+  fields:
+    nome: Debilidade ou desânimo inexplicável
+- model: core.MotivoAfastamento
+  pk: 3
+  fields:
+    nome: Muito envolvido com os cuidados do mundo, descomprometido.
+- model: core.MotivoAfastamento
+  pk: 4
+  fields:
+    nome: Envolveu-se com pecados e não se arrependeu. 
+- model: core.MotivoAfastamento
+  pk: 5
+  fields:
+    nome: Dificuldades no relacionamento com irmãos
+- model: core.MotivoAfastamento
+  pk: 6
+  fields:
+    nome: Não se sujeita à autoridade
+- model: core.MotivoAfastamento
+  pk: 7
+  fields:
+    nome: Foi reunir-se com outros irmãos da cidade
+- model: core.MotivoAfastamento
+  pk: 8
+  fields:
+    nome: Foi morar em outra cidade
+- model: core.MotivoAfastamento
+  pk: 9
+  fields:
+    nome: Erro de cadastramento

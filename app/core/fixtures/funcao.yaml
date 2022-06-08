@@ -1,0 +1,20 @@
+- model: core.Funcao
+  pk: 1
+  fields:
+    nome: Aux. Diaconato no Grupo Caseiro
+- model: core.Funcao
+  pk: 2
+  fields:
+    nome: Diácono do Bloco
+- model: core.Funcao
+  pk: 3
+  fields:
+    nome: Diácono Geral
+- model: core.Funcao
+  pk: 4
+  fields:
+    nome: Presbítero
+- model: core.Funcao
+  pk: 5
+  fields:
+    nome: Administrador
