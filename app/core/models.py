@@ -120,7 +120,8 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
         ("M", "Masculino")
     )
 
-    email = models.EmailField('Endereço de email', unique=True)
+    email = models.EmailField('Endereço de email', unique=True, blank=True, null=True)
+    username = models.EmailField('Usuário', unique=True)
     nome = models.CharField(max_length=256)
     data_nascimento = models.DateField(
         'Data de nascimento')
@@ -145,25 +146,37 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
     Relacionamentos
     ===============
     '''
-    
-    funcao = models.ForeignKey(Funcao, verbose_name = 'Função', related_name = 'funcao', on_delete = models.CASCADE, null = True, blank = True)
-    estado_civil = models.ForeignKey(EstadoCivil, verbose_name = 'Estado civil', related_name = 'estado_civil', on_delete = models.CASCADE, null = True, blank = True)
-    grupo_caseiro = models.ForeignKey(GrupoCaseiro, verbose_name = 'Grupo caseiro', related_name = 'pessoas', on_delete = models.CASCADE, null = True, blank = True)
-    localidade = models.ForeignKey(Localidade, verbose_name = 'Localidade', related_name = 'localidade', on_delete = models.CASCADE, null = True, blank = True)
-    nivel_servico = models.ForeignKey(NivelServico, verbose_name = 'Nível do servico', related_name = 'nivel', on_delete = models.CASCADE, null = True, blank =True)
-    motivo_afastamento = models.ForeignKey(MotivoAfastamento, verbose_name = 'Motivo do afastamento', related_name = 'motivo_afastamento', on_delete = models.CASCADE, null = True, blank = True)
-    origem = models.ForeignKey(OrigemDiscipulo, verbose_name = 'Origem do discípulo', related_name = 'origem', on_delete = models.CASCADE, null = True, blank = True)
-    profissao = models.ForeignKey(Profissao, verbose_name = 'Profissão', related_name = 'profissao', on_delete = models.CASCADE, null = True, blank = True)
-    pai = models.ForeignKey('self', verbose_name = 'Pai', related_name = 'pessoa_pai', on_delete = models.CASCADE, null = True, blank = True)
-    mae = models.ForeignKey('self', verbose_name = 'Mãe', related_name = 'pessoa_mae', on_delete = models.CASCADE, null = True, blank = True)
-    companheiros = models.ManyToManyField('self', verbose_name = 'Companheiros', related_name = 'companheiros', blank = True)
-    discipuladores = models.ManyToManyField('self', verbose_name = 'Discipuladores', related_name = 'discipuladores', blank = True)
-    conjuge = models.ForeignKey('self', verbose_name = 'Cônjugue', related_name = 'pessoa_conjuge', on_delete = models.CASCADE, null = True, blank = True)
-   
-   
+
+    funcao = models.ForeignKey(Funcao, verbose_name='Função',
+                               related_name='funcao', on_delete=models.CASCADE, null=True, blank=True)
+    estado_civil = models.ForeignKey(EstadoCivil, verbose_name='Estado civil',
+                                     related_name='estado_civil', on_delete=models.CASCADE, null=True, blank=True)
+    grupo_caseiro = models.ForeignKey(GrupoCaseiro, verbose_name='Grupo caseiro',
+                                      related_name='pessoas', on_delete=models.CASCADE, null=True, blank=True)
+    localidade = models.ForeignKey(Localidade, verbose_name='Localidade',
+                                   related_name='localidade', on_delete=models.CASCADE, null=True, blank=True)
+    nivel_servico = models.ForeignKey(NivelServico, verbose_name='Nível do servico',
+                                      related_name='nivel', on_delete=models.CASCADE, null=True, blank=True)
+    motivo_afastamento = models.ForeignKey(MotivoAfastamento, verbose_name='Motivo do afastamento',
+                                           related_name='motivo_afastamento', on_delete=models.CASCADE, null=True, blank=True)
+    origem = models.ForeignKey(OrigemDiscipulo, verbose_name='Origem do discípulo',
+                               related_name='origem', on_delete=models.CASCADE, null=True, blank=True)
+    profissao = models.ForeignKey(Profissao, verbose_name='Profissão',
+                                  related_name='profissao', on_delete=models.CASCADE, null=True, blank=True)
+    pai = models.ForeignKey('self', verbose_name='Pai', related_name='pessoa_pai',
+                            on_delete=models.CASCADE, null=True, blank=True)
+    mae = models.ForeignKey('self', verbose_name='Mãe', related_name='pessoa_mae',
+                            on_delete=models.CASCADE, null=True, blank=True)
+    companheiros = models.ManyToManyField(
+        'self', verbose_name='Companheiros', related_name='companheiros', blank=True)
+    discipuladores = models.ManyToManyField(
+        'self', verbose_name='Discipuladores', related_name='discipuladores', blank=True)
+    conjuge = models.ForeignKey('self', verbose_name='Cônjugue',
+                                related_name='pessoa_conjuge', on_delete=models.CASCADE, null=True, blank=True)
+
     EMAIL_FIELD = 'email'
-    USERNAME_FIELD = 'email'
-     
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['nome', 'data_nascimento', 'discipulo_vinculado']
 
     objects = PessoaManager()
 
@@ -174,6 +187,7 @@ class Pessoa(AbstractBaseUser, PermissionsMixin):
         verbose_name = 'Pessoa'
         unique_together = ('nome', 'data_nascimento')
 
+
 class Telefone(models.Model):
     numero = models.CharField('Telefone', max_length=256)
     descricao = models.CharField('Descrição do telefone', max_length=256)
@@ -182,13 +196,3 @@ class Telefone(models.Model):
 
     class Meta:
         verbose_name = 'Telefone'
-        
-# class Filho(models.Model):
-#     filho = models.ForeignKey(
-#         'Pessoa', related_name='filho', on_delete=models.CASCADE)
-
-#     class Meta:
-#         verbose_name = 'Filho'
-
-#     def __str__(self):
-#         return f"{self.filho.nome}"

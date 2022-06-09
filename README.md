@@ -29,6 +29,15 @@ make migrate
 make seed
 ```
 
+**Resetando tudo**
+
+```sh
+make rebuild
+make run
+make migrate
+make seed
+```
+
 ## Arquivos
 
 <a id="env"></a>

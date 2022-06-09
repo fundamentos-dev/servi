@@ -1,5 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+import random
+import string
 import datetime
 
 class PessoaManager(BaseUserManager):
@@ -7,20 +9,26 @@ class PessoaManager(BaseUserManager):
     Custom user model manager 
     """
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, nome, password=None, username=None, **extra_fields):
         """
         Create and save a User with the given email and password.
         """
-        if not email:
-            raise ValueError(_('The Email must be set'))
+        print('Creating user...')
 
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        if not username:
+            # generate username
+            username = nome.lower().replace(' ', '')[:16]
+        if not password:
+            # generate random password
+            password = ''.join(random.choice(string.ascii_lowercase) for i in range(8))
+            # send email if there is an email with random pass
+
+        user = self.model(nome=nome, username=username, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(self, nome, password=None, **extra_fields):
         """
         Create and save a SuperUser with the given email and password.
         """
@@ -35,4 +43,4 @@ class PessoaManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_staff=True.'))
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Superuser must have is_superuser=True.'))
-        return self.create_user(email, password, **extra_fields)
+        return self.create_user(nome, password, **extra_fields)
