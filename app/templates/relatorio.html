@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Relatórios{% endblock %}
+
+{% block content %}
+<table id="tabela-relatorio">
+    <thead data-order='[[ 1, "asc" ]]' data-page-length='120'>
+        <tr>
+            <th>É vinculado</th>
+            <th>Nome (clique para mais detalhes)</th>
+            <th>Data de nascimento</th>
+            <th>Idade</th>
+            <th>Grupo caseiro</th>
+        </tr>
+        <tbody>
+            {% for pessoa in pessoas %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </thead>
+</table>
+<script>
+// TODO Aplicar linha com mais detalhes de informações https://datatables.net/examples/api/row_details.html
+$(document).ready( function () {
+    $('#tabela-relatorio').DataTable({
+        responsive: true,
+        fixedHeader: true,
+        dom: 'Bfrtip',
+        buttons: [
+        {
+            extend: 'copy',
+            text: 'Copiar para Área de transferência'
+        }, 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+} );
+</script>
+{% endblock %}

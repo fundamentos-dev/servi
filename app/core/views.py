@@ -8,4 +8,5 @@ import datetime
 def index(request):
     now = datetime.datetime.now()
     html = "<html><body>Relatórios. It is now %s.</body></html>" % now
-    return HttpResponse(html)
+    # return HttpResponse(html)
+    return render(request, "relatorio.html")
