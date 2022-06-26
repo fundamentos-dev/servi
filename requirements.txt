@@ -4,3 +4,4 @@ python-dotenv
 bootstrap-admin
 pyyaml
 django-more-admin-filters
+unidecode

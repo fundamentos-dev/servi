@@ -1,8 +1,14 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+from unidecode import unidecode
+from django.contrib.auth import get_user_model
+
 import random
 import string
 import datetime
+
+User = get_user_model()
+
 
 class PessoaManager(BaseUserManager):
     """
@@ -17,7 +23,16 @@ class PessoaManager(BaseUserManager):
 
         if not username:
             # generate username
-            username = nome.lower().replace(' ', '')[:16]
+            username = unidecode(nome).lower().replace(' ', '')[:8]
+            # Verifica se já existe esse username
+            count = len(User.objects.filter(username=username).all())
+            if count > 0:
+                # Tenta adicionar os últimos caracteres da data de nascimento
+                username = f"{username}{extra_fields['data_nascimento']}"
+                # Usa números aleatórios até encontrar um
+                while len(User.objects.filter(username=username).all()) > 0:
+                    username = f'{username}{random.randint(0, 99)}'
+
         if not password:
             # generate random password
             password = ''.join(random.choice(string.ascii_lowercase) for i in range(8))

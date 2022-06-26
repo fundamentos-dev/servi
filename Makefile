@@ -32,5 +32,7 @@ seed:
 	docker exec -it servi_app bash -c "python manage.py shell < app/seed.py"	
 connect:
 	docker exec -it servi_db bash -c "psql -U postgres"
+superuser:
+	docker exec -it servi_app bash -c "python manage.py createsuperuser"
 
 	

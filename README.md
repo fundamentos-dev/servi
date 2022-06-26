@@ -36,6 +36,7 @@ make rebuild
 make run
 make migrate
 make seed
+make superuser
 ```
 
 ## Arquivos

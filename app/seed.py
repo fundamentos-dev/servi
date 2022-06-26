@@ -40,40 +40,23 @@ grupo_caseiro_4, _ = GrupoCaseiro.objects.get_or_create(nome="Grupo Caseiro de T
 # Declarando variáveis de uso comum
 date = datetime.date(1995, 11, 1)
 User = get_user_model()
+password = 'passw@rd'
 
 # Criando usuários de teste
-presbitero, _ = User.objects.get_or_create(nome="Presbítero de Teste", email="presbitero@teste.br", data_nascimento=date, is_staff=True, is_active=True,
-     grupo_caseiro=grupo_caseiro_3, nivel_servico=nivel_servico_presbitero, funcao=funcao_presbitero, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date)
-diacono_bloco, _ = User.objects.get_or_create(nome="Diácono Local de Teste", email="diaconolocal@teste.br",
-     data_nascimento=date, grupo_caseiro=grupo_caseiro_2,is_staff=True, is_active=True, funcao=funcao_diacono_bloco, estado_civil=estado_civil_casado, data_vinculacao_igreja_local=date)
-diacono_geral, _ = User.objects.get_or_create(nome="Diácono Geral de Teste", email="diaconogeral@teste.br",
-     data_nascimento=date, grupo_caseiro=grupo_caseiro_3, is_staff=True, is_active=True, funcao=funcao_diacono_geral, estado_civil=estado_civil_casado)
-lider, _ = User.objects.get_or_create(nome="Líder de Teste", email="lider@teste.br", data_nascimento=date,
-     is_staff=True, is_active=True, grupo_caseiro=grupo_caseiro, nivel_servico=nivel_servico_lider, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date)
-discipulo, _ = User.objects.get_or_create(nome="Discípulo de Teste", email="discipulo@teste.br",
-     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, estado_civil=estado_civil_casado)
-auxiliar_diacono, _ = User.objects.get_or_create(nome="Auxiliar de Diácono de Teste", email="auxiliardiacono@teste.br",
-     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, funcao=funcao_auxiliar_diacono, estado_civil=estado_civil_divorciado, data_vinculacao_igreja_local=date)
-administrador, _ = User.objects.get_or_create(nome="Administrador", email="administrador@teste.br",
-     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, funcao=funcao_administrador, estado_civil=estado_civil_divorciado)
+presbitero, _ = User.objects.create_user(nome="Presbítero de Teste", email="presbitero@teste.br", data_nascimento=date, is_staff=True, is_active=True, grupo_caseiro=grupo_caseiro_3, nivel_servico=nivel_servico_presbitero, funcao=funcao_presbitero, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date, password=password)
+diacono_bloco, _ = User.objects.create_user(nome="Diácono Local de Teste", email="diaconolocal@teste.br",
+     data_nascimento=date, grupo_caseiro=grupo_caseiro_2,is_staff=True, is_active=True, funcao=funcao_diacono_bloco, estado_civil=estado_civil_casado, data_vinculacao_igreja_local=date, password=password)
+diacono_geral, _ = User.objects.create_user(nome="Diácono Geral de Teste", email="diaconogeral@teste.br",
+     data_nascimento=date, grupo_caseiro=grupo_caseiro_3, is_staff=True, is_active=True, funcao=funcao_diacono_geral, estado_civil=estado_civil_casado, password=password)
+lider, _ = User.objects.create_user(nome="Líder de Teste", email="lider@teste.br", data_nascimento=date,
+     is_staff=True, is_active=True, grupo_caseiro=grupo_caseiro, nivel_servico=nivel_servico_lider, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date, password=password)
+discipulo, _ = User.objects.create_user(nome="Discípulo de Teste", email="discipulo@teste.br",
+     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, estado_civil=estado_civil_casado, password=password)
+auxiliar_diacono, _ = User.objects.create_user(nome="Auxiliar de Diácono de Teste", email="auxiliardiacono@teste.br",
+     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, funcao=funcao_auxiliar_diacono, estado_civil=estado_civil_divorciado, data_vinculacao_igreja_local=date, password=password)
+administrador, _ = User.objects.create_user(nome="Administrador", email="administrador@teste.br",
+     data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, funcao=funcao_administrador, estado_civil=estado_civil_divorciado, password=password)
 
-# Atribuindo senha comum aos usuários de teste
-presbitero.set_password("passw@rd")
-diacono_bloco.set_password("passw@rd")
-diacono_geral.set_password("passw@rd")
-lider.set_password("passw@rd")
-discipulo.set_password("passw@rd")
-auxiliar_diacono.set_password("passw@rd")
-administrador.set_password("passw@rd")
-
-# Salvando alterações realizadas em usuário
-presbitero.save()
-diacono_bloco.save()
-diacono_geral.save()
-lider.save()
-discipulo.save()
-auxiliar_diacono.save()
-administrador.save()
 
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
