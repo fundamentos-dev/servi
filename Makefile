@@ -12,6 +12,8 @@ run:
 	docker-compose down
 	docker-compose up -d
 	docker-compose logs -f
+logs: 
+	docker-compose logs -f
 down: 
 	docker-compose down --remove-orphans --volumes
 migrate:
@@ -34,5 +36,5 @@ connect:
 	docker exec -it servi_db bash -c "psql -U postgres"
 superuser:
 	docker exec -it servi_app bash -c "python manage.py createsuperuser"
-
-	
+sass:
+	docker exec -it servi_app bash -c "python manage.py sass /usr/src/app/static/scss/ /usr/src/app/static/css/ --watch"

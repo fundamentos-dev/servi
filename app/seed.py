@@ -43,18 +43,18 @@ User = get_user_model()
 password = 'passw@rd'
 
 # Criando usuários de teste
-presbitero, _ = User.objects.create_user(nome="Presbítero de Teste", email="presbitero@teste.br", data_nascimento=date, is_staff=True, is_active=True, grupo_caseiro=grupo_caseiro_3, nivel_servico=nivel_servico_presbitero, funcao=funcao_presbitero, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date, password=password)
-diacono_bloco, _ = User.objects.create_user(nome="Diácono Local de Teste", email="diaconolocal@teste.br",
-     data_nascimento=date, grupo_caseiro=grupo_caseiro_2,is_staff=True, is_active=True, funcao=funcao_diacono_bloco, estado_civil=estado_civil_casado, data_vinculacao_igreja_local=date, password=password)
-diacono_geral, _ = User.objects.create_user(nome="Diácono Geral de Teste", email="diaconogeral@teste.br",
+presbitero = User.objects.create_user(nome="Presbítero de Teste", email="presbitero@teste.br", data_nascimento=date, is_staff=True, is_active=True, grupo_caseiro=grupo_caseiro_3, nivel_servico=nivel_servico_presbitero, funcao=funcao_presbitero, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date, password=password)
+diacono_bloco = User.objects.create_user(nome="Diácono Local de Teste", email="diaconolocal@teste.br",
+     data_nascimento=date, grupo_caseiro=grupo_caseiro_2, is_staff=True, is_active=True, funcao=funcao_diacono_bloco, estado_civil=estado_civil_casado, data_vinculacao_igreja_local=date, password=password)
+diacono_geral = User.objects.create_user(nome="Diácono Geral de Teste", email="diaconogeral@teste.br",
      data_nascimento=date, grupo_caseiro=grupo_caseiro_3, is_staff=True, is_active=True, funcao=funcao_diacono_geral, estado_civil=estado_civil_casado, password=password)
-lider, _ = User.objects.create_user(nome="Líder de Teste", email="lider@teste.br", data_nascimento=date,
+lider = User.objects.create_user(nome="Líder de Teste", email="lider@teste.br", data_nascimento=date,
      is_staff=True, is_active=True, grupo_caseiro=grupo_caseiro, nivel_servico=nivel_servico_lider, estado_civil=estado_civil_solteiro, data_vinculacao_igreja_local=date, password=password)
-discipulo, _ = User.objects.create_user(nome="Discípulo de Teste", email="discipulo@teste.br",
+discipulo = User.objects.create_user(nome="Discípulo de Teste", email="discipulo@teste.br",
      data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, estado_civil=estado_civil_casado, password=password)
-auxiliar_diacono, _ = User.objects.create_user(nome="Auxiliar de Diácono de Teste", email="auxiliardiacono@teste.br",
+auxiliar_diacono = User.objects.create_user(nome="Auxiliar de Diácono de Teste", email="auxiliardiacono@teste.br",
      data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, funcao=funcao_auxiliar_diacono, estado_civil=estado_civil_divorciado, data_vinculacao_igreja_local=date, password=password)
-administrador, _ = User.objects.create_user(nome="Administrador", email="administrador@teste.br",
+administrador = User.objects.create_user(nome="Administrador", email="administrador@teste.br",
      data_nascimento=date, is_staff=True, grupo_caseiro=grupo_caseiro, is_active=True, funcao=funcao_administrador, estado_civil=estado_civil_divorciado, password=password)
 
 

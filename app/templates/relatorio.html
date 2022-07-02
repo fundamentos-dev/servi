@@ -3,7 +3,7 @@
 {% block title %}Relatórios{% endblock %}
 
 {% block content %}
-<table id="tabela-relatorio">
+<table class="dataTable" id="tabela-relatorio">
     <thead data-order='[[ 1, "asc" ]]' data-page-length='120'>
         <tr>
             <th>É vinculado</th>
@@ -15,11 +15,11 @@
         <tbody>
             {% for pessoa in pessoas %}
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{pessoa.discipulo_vinculado}}</td>
+                <td>{{pessoa.nome}}</td>
+                <td>{{pessoa.data_nascimento}}</td>
+                <td>Calculo de idade</td>
+                <td>{{pessoa.grupo_caseiro.nome}}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -39,6 +39,6 @@ $(document).ready( function () {
         }, 'csv', 'excel', 'pdf', 'print'
         ]
     });
-} );
+});
 </script>
 {% endblock %}

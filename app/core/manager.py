@@ -1,14 +1,10 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from unidecode import unidecode
-from django.contrib.auth import get_user_model
 
 import random
 import string
 import datetime
-
-User = get_user_model()
-
 
 class PessoaManager(BaseUserManager):
     """
@@ -19,28 +15,34 @@ class PessoaManager(BaseUserManager):
         """
         Create and save a User with the given email and password.
         """
-        print('Creating user...')
+        print('Criando usuário...')
+        print(nome, password, username, extra_fields)
 
         if not username:
             # generate username
-            username = unidecode(nome).lower().replace(' ', '')[:8]
+            username = unidecode(nome).replace(" ", "").lower()[:8]
             # Verifica se já existe esse username
-            count = len(User.objects.filter(username=username).all())
+            count = len(self.model.objects.filter(username=username).all())
             if count > 0:
                 # Tenta adicionar os últimos caracteres da data de nascimento
-                username = f"{username}{extra_fields['data_nascimento']}"
+                username = f"{username}{extra_fields['data_nascimento'].now.strftime('%Y')[2:4]}"
                 # Usa números aleatórios até encontrar um
-                while len(User.objects.filter(username=username).all()) > 0:
+                while len(self.model.objects.filter(username=username).all()) > 0:
                     username = f'{username}{random.randint(0, 99)}'
+                    
 
         if not password:
             # generate random password
             password = ''.join(random.choice(string.ascii_lowercase) for i in range(8))
-            # send email if there is an email with random pass
+
+        # send email if there is an email with random pass
+        print(f'Senha criada para {username} é {password}')
 
         user = self.model(nome=nome, username=username, **extra_fields)
         user.set_password(password)
         user.save()
+
+        print(f'Usuário criado')
         return user
 
     def create_superuser(self, nome, password=None, **extra_fields):

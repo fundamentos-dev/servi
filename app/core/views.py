@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import datetime
 
+from app.core.models import Pessoa
+
 # Create your views here.
 
 
 def index(request):
-    now = datetime.datetime.now()
-    html = "<html><body>Relatórios. It is now %s.</body></html>" % now
-    # return HttpResponse(html)
-    return render(request, "relatorio.html")
+    # Coletando todas as pessoas para serem visualizadas, no momento sem filtro de autorizações
+    pessoas = Pessoa.objects.all()
+    return render(request, "relatorio.html", { "pessoas": pessoas })
