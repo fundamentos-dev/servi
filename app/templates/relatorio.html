@@ -3,8 +3,18 @@
 {% block title %}Relatórios{% endblock %}
 
 {% block content %}
+<h1>Tabela de Relatório</h1>
+<p>Para exportar a tabela filtrada selecione um dos itens abaixo</p>
+<p>Ocultar e mostrar colunas abaixo:</p>
+<ul class="">
+    <li><a class="toggle-vis" data-column="0" href="#">É vinculado</a></li>
+    <li><a class="toggle-vis" data-column="1" href="#">Nome</a></li>
+    <li><a class="toggle-vis" data-column="2" href="#">Data de Nascimento</a></li>
+    <li><a class="toggle-vis" data-column="3" href="#">Idade</a></li>
+    <li><a class="toggle-vis" data-column="4" href="#">Grupo Caseiro</a></li>
+</ul>
 <table class="dataTable" id="tabela-relatorio">
-    <thead data-order='[[ 1, "asc" ]]' data-page-length='120'>
+    <thead data-order='[[ 1," asc" ]]' data-page-length='120'>
         <tr>
             <th>É vinculado</th>
             <th>Nome (clique para mais detalhes)</th>
@@ -17,8 +27,8 @@
             <tr>
                 <td>{{pessoa.discipulo_vinculado}}</td>
                 <td>{{pessoa.nome}}</td>
-                <td>{{pessoa.data_nascimento}}</td>
-                <td>Calculo de idade</td>
+                <td>{{pessoa.data_nascimento|date:"d/M/Y"}}</td>
+                <td>{{pessoa.idade}}</td>
                 <td>{{pessoa.grupo_caseiro.nome}}</td>
             </tr>
             {% endfor %}
@@ -28,7 +38,9 @@
 <script>
 // TODO Aplicar linha com mais detalhes de informações https://datatables.net/examples/api/row_details.html
 $(document).ready( function () {
-    $('#tabela-relatorio').DataTable({
+    $('#tabela-relatorio thead tr').clone(true).addClass('filters').appendTo('#tabela-relatorio thead')
+
+    var table = $('#tabela-relatorio').DataTable({
         responsive: true,
         fixedHeader: true,
         dom: 'Bfrtip',
@@ -37,7 +49,68 @@ $(document).ready( function () {
             extend: 'copy',
             text: 'Copiar para Área de transferência'
         }, 'csv', 'excel', 'pdf', 'print'
-        ]
+        ],
+        initComplete: function () {
+            var api = this.api();
+ 
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    $(cell).html('<input type="text" placeholder="' + title + '" />');
+ 
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+ 
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+ 
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+    });
+
+    $('a.toggle-vis').on('click', function (e) {
+        e.preventDefault();
+
+        console.log('click')
+ 
+        // Get the column API object
+        var column = table.column($(this).attr('data-column'));
+ 
+        // Toggle the visibility
+        column.visible(!column.visible());
     });
 });
 </script>

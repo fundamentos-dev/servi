@@ -87,7 +87,8 @@ class Localidade(models.Model):
         return f"{self.nome}"
 
     class Meta:
-        verbose_name = 'Localidade'
+        verbose_name = 'Bairro'
+        verbose_name_plural = 'Bairros'
 
 
 class Funcao(models.Model):

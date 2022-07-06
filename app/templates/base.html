@@ -6,20 +6,25 @@
     <title>{% block title %}SERVI{% endblock %}</title>
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
     <meta charset="utf-8">
 </head>
 <body>
     <header>
-        <ul>
-            <li><a href="/">Relatório</a></li>
-            <li>Adicionar Recursos
+        <div>
             <ul>
-                <li><a href="/admin/">Adicionar Pessoa</a></li>
-                <li><a href="/admin/">Adicionar Recursos</a></li>
+                <li><a href="/">Relatório</a></li>
+                <li>Adicionar Recursos
+                <ul>
+                    <li><a href="/admin/core/pessoa/add/">Adicionar Pessoa</a></li>
+                    <li><a href="/admin/core/profissao/add/">Adicionar Grupo Caseiro</a></li>
+                    <li><a href="/admin/core/profissao/add/">Adicionar Profissão</a></li>
+                    <li><a href="/admin/core/localidade/add/">Adicionar Bairro</a></li>
+                </ul>
+                </li>
+                <li><a href="/admin">Acessar painel administrativo</a></li>
             </ul>
-            </li>
-            <li><a href="/">Acessar painel administrativo</a></li>
-        </ul>
+        </div>
     </header>
     <main>
         {% block content %}{% endblock %}

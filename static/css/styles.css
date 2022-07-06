@@ -2807,3 +2807,99 @@ div.dtsr-creation-form div.dtsr-form-row input.dtsr-check-box {
 div.dtsr-creation-form div.dtsr-form-row label.dtsr-toggle-title {
   margin-right: calc(-33.3% - 30px) !important;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 14px;
+  font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+}
+
+#header #branding a:nth-child(1) {
+  height: 20px;
+  background: #ccc;
+  margin: 20px 2px;
+}
+
+body > header {
+  background: #417690;
+  width: 100vw;
+  height: 84px;
+}
+
+body > header > div {
+  max-width: 1281px;
+  margin: 0 auto;
+}
+
+body > header > div > ul {
+  display: inline-flex;
+  list-style: none;
+  line-height: 84px;
+  z-index: 99;
+  color: #fff;
+}
+
+body > header > div > ul li {
+  padding: 0 5px;
+  background: #417690;
+}
+
+body > header > div > ul li:hover {
+  background: #5699ba;
+}
+
+body > header > div > ul li:hover > a {
+  background: #5699ba;
+}
+
+body > header > div > ul > li {
+  position: relative;
+  margin-right: 10px;
+  background: #417690;
+}
+
+body > header > div > ul > li:first-child {
+  margin-left: -5px;
+}
+
+body > header > div > ul > li a {
+  color: #fff;
+  background: #417690;
+  text-decoration: none;
+}
+
+body > header > div > ul ul {
+  position: absolute;
+  display: none;
+  margin-left: -5px;
+  z-index: 99;
+}
+
+body > header > div > ul ul li {
+  display: block;
+  width: 200px;
+  line-height: 40px;
+}
+
+body > main {
+  width: 100vw;
+  max-width: 1281px;
+  margin: 20px auto;
+}
+
+h1 {
+  margin-bottom: 8px;
+}
+
+p {
+  margin: 8px 0;
+}
+
+#tabela-relatorio {
+  border: 1px solid #000;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
