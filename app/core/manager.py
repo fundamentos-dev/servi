@@ -25,7 +25,7 @@ class PessoaManager(BaseUserManager):
             count = len(self.model.objects.filter(username=username).all())
             if count > 0:
                 # Tenta adicionar os últimos caracteres da data de nascimento
-                username = f"{username}{extra_fields['data_nascimento'].now.strftime('%Y')[2:4]}"
+                username = f"{username}{extra_fields['data_nascimento'].strftime('%Y')[2:4]}"
                 # Usa números aleatórios até encontrar um
                 while len(self.model.objects.filter(username=username).all()) > 0:
                     username = f'{username}{random.randint(0, 99)}'
@@ -49,6 +49,8 @@ class PessoaManager(BaseUserManager):
         """
         Create and save a SuperUser with the given email and password.
         """
+        print('Criando superuser...')
+
         date = datetime.date(1995, 11, 1)
         
         extra_fields.setdefault('is_staff', True)
