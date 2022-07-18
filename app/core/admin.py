@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 from more_admin_filters import MultiSelectRelatedFilter
 import csv
 from django.http import HttpResponse
+from django.db.models import Q
 
 
 '''
@@ -44,10 +45,11 @@ class PessoaAdmin(admin.ModelAdmin):
     # Populando campos padrões do admin
     list_display = ('id', 'email', 'nome', 'data_nascimento', 'apelido', 'sexo', 'discipulo_vinculado', 'grupo_caseiro', 'estado_civil', 'conjuge', 'pai', 'mae', 'data_vinculacao_igreja_local',
                     'origem', 'nivel_servico', 'funcao', 'profissao', 'localidade' , 'data_afastamento', 'motivo_afastamento')
-    fields = ['email', 'nome', 'data_nascimento', 'apelido', 'sexo', 'discipulo_vinculado', 'grupo_caseiro', 'discipuladores', 'companheiros', 'estado_civil', 'conjuge', 'pai', 'mae', 'data_vinculacao_igreja_local',
+    fields = ['email', 'nome', 'username', 'data_nascimento', 'apelido', 'sexo', 'discipulo_vinculado', 'grupo_caseiro', 'discipuladores', 'companheiros', 'estado_civil', 'conjuge', 'pai', 'mae', 'data_vinculacao_igreja_local',
                     'origem', 'nivel_servico', 'funcao', 'profissao', 'localidade' , 'data_afastamento', 'motivo_afastamento']
     list_display_links = ('id', 'email', 'nome')
     search_fields = ('nome', 'email')
+    readonly_fields = ('username', )
     # https://github.com/thomst/django-more-admin-filters
     list_filter = [('estado_civil', MultiSelectRelatedFilter),
                    ('nivel_servico', MultiSelectRelatedFilter), 'grupo_caseiro']
@@ -76,14 +78,16 @@ class PessoaAdmin(admin.ModelAdmin):
     # Criando regras para visualização de registro de acordo com as permissões
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        qs = qs.filter(discipulo_vinculado=True)
-        # Apresentando as informações de acordo com o tipo de usuário
-        
+        # qs = qs.filter(discipulo_vinculado=True)
+        # Apresentando as informações de acordo com o tipo de usuário        
         if request.user.has_perm('core.view_self_pessoa') and not request.user.is_superuser:
+            # Só visualiza a si próprio
             return qs.filter(email=request.user.email)
         elif request.user.has_perm('core.view_grupocaseiro_pessoa') and not request.user.is_superuser:
-            return qs.filter(grupo_caseiro=request.user.grupo_caseiro)
+            # Deve mostrar os dados do grupo caseiro e todos os relacionados por juntas naturais, companheirismo ou discipulador
+            return qs.filter(Q(grupo_caseiro=request.user.grupo_caseiro) | Q(discipuladores__grupo_caseiro=request.user.grupo_caseiro) | Q(companheiros__grupo_caseiro=request.user.grupo_caseiro) | Q(pessoa_pai__grupo_caseiro=request.user.grupo_caseiro) | Q(pessoa_mae__grupo_caseiro=request.user.grupo_caseiro))
         elif request.user.has_perm('core.view_grupocaseiro_bloco_pessoa') and not request.user.is_superuser:
+            # Visualiza todos os do bloco e vinculados
             return qs.filter(grupo_caseiro__bloco_id=request.user.grupo_caseiro.bloco.id)
         return qs.all()
 

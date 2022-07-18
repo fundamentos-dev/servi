@@ -1,5 +1,6 @@
 # Adicionando usuários de teste
 import datetime
+import random
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
@@ -22,8 +23,6 @@ funcao_administrador = Funcao.objects.get(id=5)
 estado_civil_solteiro = EstadoCivil.objects.get(id=1)
 estado_civil_casado = EstadoCivil.objects.get(id=2)
 estado_civil_divorciado = EstadoCivil.objects.get(id=3)
-
-
 
 
 # Selecionando Bloco para teste
@@ -207,7 +206,7 @@ g_diacono_bloco.permissions.add(p_grupocaseiro_bloco_pessoa_view, p_grupocaseiro
 
 g_diacono_geral.permissions.add(p_pessoa_view, p_grupo_caseiro_add, p_grupocaseiro_pessoa_change, p_pessoa_change, p_pessoa_add, p_grupo_caseiro_change, p_grupo_caseiro_view)
 
-g_presbitero.permissions.add(p_pessoa_view)
+g_presbitero.permissions.add(p_pessoa_view, p_bloco_change)
 
 g_administrador.permissions.add(p_pessoa_add, p_pessoa_change, p_pessoa_view, p_grupo_caseiro_add, p_grupo_caseiro_change, p_grupo_caseiro_view, p_motivo_afastamento_add, p_motivo_afastamento_change, p_motivo_afastamento_view, p_origem_discipulo_view, p_origem_discipulo_add, p_origem_discipulo_change, p_profissao_add, p_profissao_change, p_profissao, p_estado_civil_add, p_estado_civil_change, p_estado_civil_view, p_bloco_add, p_bloco_change, p_bloco_view, p_localidade_add, p_localidade_change, p_localidade_view, p_funcao_add, p_funcao_change, p_funcao_view, p_nivel_servico_add, p_nivel_servico_change, p_nivel_servico_view, p_telefone_add, p_telefone_change, p_telefone_view)
 
@@ -222,10 +221,33 @@ g_presbitero.user_set.add(presbitero)
 g_administrador.user_set.add(administrador)
 
 
+# Criando contas fakes
+from faker import Faker
+fake = Faker()
 
+groups = [
+     g_discipulo,
+     g_lider_g_caseiro,
+     g_auxiliar_diacono,
+     g_diacono_bloco,
+     g_diacono_geral,
+     g_presbitero,
+     g_administrador
+]
 
+estados_civis = EstadoCivil.objects.all()
+niveis_servico = NivelServico.objects.all()
+grupos_caseiro = GrupoCaseiro.objects.all()
 
+for _ in range(45):
 
+     try:
+          user = User.objects.create_user(nome=fake.name(), email=fake.email(), data_nascimento=fake.date(), is_staff=True, is_active=True, grupo_caseiro=random.choice(grupos_caseiro), nivel_servico=random.choice(niveis_servico), estado_civil=random.choice(estados_civis), data_vinculacao_igreja_local=fake.date(), password=password, sexo=random.choice(['M', 'F']))
 
+          group = random.choice(groups)
+          group.user_set.add(user)
 
+     except Exception as e:
+          print(e)
 
+     

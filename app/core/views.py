@@ -1,12 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import datetime
-
+from django.contrib.auth.decorators import login_required, user_passes_test
 from app.core.models import Pessoa
 
 # Create your views here.
 
+def manage_access(user):
+    # Permissões negadas
+    permissions_list = ['core.view_self_pessoa']
 
+    for permission in permissions_list:
+        if user.has_perm(permission) == False:
+           return True
+
+    return False
+
+@login_required(login_url='/admin/login')
+@user_passes_test(manage_access)
 def index(request):
     # Coletando todas as pessoas para serem visualizadas, no momento sem filtro de autorizações
     pessoas = Pessoa.objects.all()
