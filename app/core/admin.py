@@ -1,8 +1,10 @@
 #from types import NoneType
+from pprint import pprint
 import re
+from wsgiref.util import request_uri
 from app.core import models
 from django.contrib import admin
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from more_admin_filters import MultiSelectRelatedFilter
 import csv
 from django.http import HttpResponse
@@ -26,11 +28,7 @@ class GrupoCaseiroInline(admin.TabularInline):
 class TelefoneInline(admin.TabularInline):
     model = models.Telefone
     extra = 1
-    
-# class FilhoInline(admin.TabularInline):
-#     model = models.Filho
-#     fields = ('filho',)
-#     extra = 1
+
 
 '''
 ===============
@@ -42,10 +40,10 @@ Registrando Admin
 @admin.register(models.Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
     # Populando campos padrões do admin
-    list_display = ('id', 'email', 'nome', 'data_nascimento', 'apelido', 'sexo', 'discipulo_vinculado', 'grupo_caseiro', 'estado_civil', 'conjuge', 'pai', 'mae', 'data_vinculacao_igreja_local',
-                    'origem', 'nivel_servico', 'funcao', 'profissao', 'localidade' , 'data_afastamento', 'motivo_afastamento')
-    fields = ['email', 'nome', 'data_nascimento', 'apelido', 'sexo', 'discipulo_vinculado', 'grupo_caseiro', 'discipuladores', 'companheiros', 'estado_civil', 'conjuge', 'pai', 'mae', 'data_vinculacao_igreja_local',
-                    'origem', 'nivel_servico', 'funcao', 'profissao', 'localidade' , 'data_afastamento', 'motivo_afastamento']
+    list_display = ('id', 'discipulo_vinculado', 'email', 'nome', 'username', 'data_nascimento', 'apelido', 'sexo', 'grupo_caseiro', 'estado_civil', 'conjuge', 'pai', 'mae', 'data_vinculacao_igreja_local',
+                    'origem', 'nivel_servico', 'funcao', 'profissao', 'localidade', 'data_afastamento', 'motivo_afastamento')
+    fields = ['nome', 'username', 'data_nascimento', 'apelido', 'sexo', 'email', 'discipulo_vinculado', 'grupo_caseiro', 'discipuladores', 'companheiros', 'estado_civil', 'conjuge', 'pai', 'mae', 'data_vinculacao_igreja_local',
+              'origem', 'nivel_servico', 'funcao', 'profissao', 'localidade', 'data_afastamento', 'motivo_afastamento']
     list_display_links = ('id', 'email', 'nome')
     search_fields = ('nome', 'email')
     # https://github.com/thomst/django-more-admin-filters
@@ -57,16 +55,18 @@ class PessoaAdmin(admin.ModelAdmin):
     inlines = [
         TelefoneInline
     ]
+
     actions = ['download_csv']
-    
+
     def download_csv(self, request, queryset):
         with open('relatorio.csv', 'wt') as arquivo:
             writer = csv.writer(arquivo)
             writer.writerow(['id', 'email', 'nome', 'data_nascimento', 'apelido', 'discipulo_vinculado', 'data_vinculacao_igreja_local',
-                        'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'conjuge'])
+                             'data_afastamento', 'sexo', 'funcao', 'estado_civil', 'grupo_caseiro', 'localidade', 'nivel_servico', 'origem', 'profissao', 'pai', 'mae', 'conjuge'])
             for dado in queryset:
-                writer.writerow([dado.id, dado.email, dado.nome, dado.data_nascimento, dado.apelido, dado.discipulo_vinculado, dado.data_vinculacao_igreja_local, dado.data_afastamento, dado.sexo, dado.funcao, dado.estado_civil, dado.grupo_caseiro, dado.localidade, dado.nivel_servico, dado.origem, dado.profissao, dado.pai, dado.mae, dado.conjuge])    
-            
+                writer.writerow([dado.id, dado.email, dado.nome, dado.data_nascimento, dado.apelido, dado.discipulo_vinculado, dado.data_vinculacao_igreja_local, dado.data_afastamento,
+                                dado.sexo, dado.funcao, dado.estado_civil, dado.grupo_caseiro, dado.localidade, dado.nivel_servico, dado.origem, dado.profissao, dado.pai, dado.mae, dado.conjuge])
+
         with open('relatorio.csv', 'r') as arquivo:
             response = HttpResponse(arquivo, content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename=relatorio.csv'
@@ -78,7 +78,7 @@ class PessoaAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         qs = qs.filter(discipulo_vinculado=True)
         # Apresentando as informações de acordo com o tipo de usuário
-        
+
         if request.user.has_perm('core.view_self_pessoa') and not request.user.is_superuser:
             return qs.filter(email=request.user.email)
         elif request.user.has_perm('core.view_grupocaseiro_pessoa') and not request.user.is_superuser:
@@ -99,6 +99,7 @@ class PessoaAdmin(admin.ModelAdmin):
         g_diacono_bloco = Group.objects.get(name='Diácono bloco')
         g_diacono_geral = Group.objects.get(name='Diácono geral')
         g_administrador = Group.objects.get(name='Administrador')
+
         # Testanando qual o nível de serviço/função do usuário adicionado e atribuindo o grupo dinamicamente
         if obj.nivel_servico is not None:
             if obj.nivel_servico.id == 6:
@@ -116,45 +117,33 @@ class PessoaAdmin(admin.ModelAdmin):
                 g_administrador.user_set.add(obj)
         elif obj.discipulo_vinculado:
             g_discipulo.user_set.add(obj)
-                
+
         if obj.discipulo_vinculado:
             obj.is_staff = True
-        
+
         if obj.data_afastamento is not None:
             obj.discipulo_vinculado = False
             obj.is_staff = False
             obj.is_active = False
-        
-        # if obj.mae:
-        #     id = obj.mae.id
-        #     mae = models.Pessoa.objects.get(id = id)           
-        #     filho, _ = models.Filho.objects.get_or_create(filho=mae)
-        #     print(filho)
-        
-        # if obj.pai:
-        #     id = obj.pai.id
-        #     pai = models.Pessoa.objects.get(id = id)           
-        #     filho, _ = models.Filho.objects.get_or_create(filho=pai) 
-        #     print(filho)
 
     # Criando regras para edição de regristros de acordo com as permissões
     def get_form(self, request, obj=None, **kwargs):
         # Formulário para editar pessoas
         qs = super().get_queryset(request)
-        form = super().get_form(request, obj, **kwargs)
-        disabled_fields = set()  # type: Set[str]
-        g_administrador = Group.objects.get(name = 'Administrador')
-    
+        # form = super().get_form(request, obj, **kwargs)
+        current_user = request.user
+        fields_to_disable = []
+
+        permissions = [{'codename': p.codename}
+                       for p in Permission.objects.filter(group__user=request.user).all()]
+        pprint(permissions)
         # Validando os campos de acordo com as permissões
-        if request.user.has_perm('core.cannot_change_funcao_pessoa') and not request.user.is_superuser and not g_administrador:
-            disabled_fields |= {
-                'funcao',
-                'nivel_servico',
-                'motivo_afastamento',
-                'data_afastamento',
-                'grupo_caseiro'
-            }
-            
+        if request.user.has_perm('core.cannot_change_funcao_pessoa') and not request.user.is_superuser:
+            # Usuário é um discipulo que não pode editar sua própria função nem ver alguns de seus campos
+            fields_to_disable = [
+                'username'
+            ]
+
         elif request.user.has_perm('core.change_grupocaseiro_pessoa') and not request.user.is_superuser:
             if request.user.grupo_caseiro:
                 filtro = list(
@@ -167,7 +156,9 @@ class PessoaAdmin(admin.ModelAdmin):
                     if id_form == id:
                         controle = True
                 if not controle:
-                    raise ValueError('Não tem autorização para acessar a página')
+                    raise ValueError(
+                        'Não tem autorização para acessar a página')
+
         elif request.user.has_perm('core.change_grupocaseiro_bloco_pessoa') and not request.user.is_superuser:
             if request.user.grupo_caseiro.bloco.id:
                 filtro = list(
@@ -182,12 +173,30 @@ class PessoaAdmin(admin.ModelAdmin):
             if not controle:
                 raise ValueError('Não tem autorização para acessar a página')
 
-        # Criando laço para pecorrer os campos desabiltados
-        for f in disabled_fields:
+        form = super(PessoaAdmin, self).get_form(request, obj, **kwargs)
+        form.current_user = current_user
+
+        # Criando loop para pecorrer os campos desabiltados
+        for f in fields_to_disable:
             if f in form.base_fields:
                 form.base_fields[f].disabled = True
 
         return form
+
+    def get_fields(self, request, obj=None):
+        fields = super(PessoaAdmin, self).get_fields(request, obj)
+
+        fields_to_remove = []
+        if request.user.has_perm('core.cannot_change_funcao_pessoa') and not request.user.is_superuser:
+            fields_to_remove = ['discipuladores','motivo_afastamento']
+
+        # Criando loop para pecorrer os campos a ser removidos do form
+        for f in fields_to_remove:
+            if f in fields:
+                fields.remove(f)
+
+        return fields
+
 
 # admin.site.register(models.Filho)
 admin.site.register(models.MotivoAfastamento)

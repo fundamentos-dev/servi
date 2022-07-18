@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 from pathlib import Path
+from django.conf.locale.es import formats as es_formats
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -52,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware'
+    # 'django.middleware.locale.LocaleMiddleware'
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -112,6 +113,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
+# https://henriquebastos.net/cuidados-importantes-ao-configurar-i18n-no-django/
+# https://docs.djangoproject.com/en/4.0/topics/i18n/translation/#how-django-discovers-language-preference
+
+es_formats.DATETIME_FORMAT = "d M Y H:i:s"
+
+LANGUAGES = (
+    ('en', u'English'),
+    ('pt-br', u'Português'),
+)
 
 LANGUAGE_CODE = 'pt-br'
 
@@ -119,8 +129,19 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
+USE_L10N = False
+
+DATE_FORMAT = 'd-m-Y'
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
+DATETIME_FORMAT = 'd-m-Y H:i'
+
 USE_TZ = True
 
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+
+LOCALE_PATHS = (
+    os.path.join(PROJECT_PATH, '../locale'),
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
