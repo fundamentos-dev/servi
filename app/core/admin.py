@@ -148,7 +148,7 @@ class PessoaAdmin(admin.ModelAdmin):
 
         permissions = [{'codename': p.codename}
                        for p in Permission.objects.filter(group__user=request.user).all()]
-        pprint(permissions)
+        # pprint(permissions)
         
         # Variável que determina se o formulário é mostrado ou não
         controle = False
@@ -190,10 +190,10 @@ class PessoaAdmin(admin.ModelAdmin):
         form.current_user = current_user
 
         # Verifica se o usuário tem uma função inferior à do usuário a ser editado, se tiver desabilita o campo de função
-        if (current_user.funcao is not None and obj.funcao is not None and current_user.funcao.id < obj.funcao.id) or current_user.funcao is None:
+        if obj is not None and (current_user.funcao is not None and obj.funcao is not None and current_user.funcao.id < obj.funcao.id) or current_user.funcao is None:
             fields_to_disable.append('funcao')
         # Verifica se o usuário tem uma nível de serviço inferior à do usuário a ser editado, se tiver desabilita o campo de nível de serviço
-        if (current_user.nivel_servico is not None and obj.nivel_servico is not None and current_user.nivel_servico.id < obj.nivel_servico.id) or current_user.nivel_servico is None:
+        if obj is not None and (current_user.nivel_servico is not None and obj.nivel_servico is not None and current_user.nivel_servico.id < obj.nivel_servico.id) or current_user.nivel_servico is None:
             fields_to_disable.append('nivel_servico')
 
         # Criando loop para pecorrer os campos desabiltados
@@ -217,6 +217,19 @@ class PessoaAdmin(admin.ModelAdmin):
                 fields.remove(f)
 
         return fields
+
+    def save_form(self, request, form, change):
+        if not change:
+            discipuladores = form.cleaned_data.pop('discipuladores')
+            companheiros = form.cleaned_data.pop('companheiros')
+            for key, value in form.cleaned_data.items():
+                print(key, value, type(value))
+            form.instance = self.model.objects.create_user(
+                **form.cleaned_data)
+            form.instance.discipuladores.set(discipuladores)
+            form.instance.companheiros.set(companheiros)
+                
+        return super().save_form(request, form, change)
 
 
 # admin.site.register(models.Filho)
