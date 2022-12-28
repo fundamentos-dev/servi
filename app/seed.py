@@ -1,12 +1,15 @@
 # Adicionando usuários de teste
 import datetime
 import random
+import csv
+import os
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 
+from app.settings import BASE_DIR
 from app.core import models
-from app.core.models import Bloco, Funcao, GrupoCaseiro, NivelServico, EstadoCivil
+from app.core.models import Bloco, Funcao, GrupoCaseiro, NivelServico, EstadoCivil, Localidade
 
 # Selecionando Nível de Serviço
 nivel_servico_lider = NivelServico.objects.get(id=6)
@@ -219,4 +222,9 @@ for _ in range(45):
      except Exception as e:
           print(e)
 
-     
+with open(os.path.join(BASE_DIR, "app/localidades.csv"), 'r') as file:
+  csvreader = csv.reader(file)
+  for row in csvreader:
+    localidade = Localidade.objects.create(nome=row[0])
+    print(f'Adicionando localidade: {localidade.nome}')
+    localidade.save()

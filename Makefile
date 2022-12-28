@@ -24,6 +24,11 @@ terminal:
 	docker exec -it servi_app bash
 colectstatic:
 	docker exec -it servi_app bash -c "python manage.py collectstatic"
+db-reset:
+	docker compose rm -s -v -f db
+	sudo rm -rf data
+	docker compose up -d db
+	docker compose logs -f
 seed:
 	docker exec -it servi_app bash -c " \
 		python manage.py loaddata bloco.yaml && \

@@ -15,7 +15,7 @@ from pathlib import Path
 from django.conf.locale.es import formats as es_formats
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
