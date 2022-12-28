@@ -160,31 +160,39 @@ class PessoaAdmin(admin.ModelAdmin):
             ]
 
         elif request.user.has_perm('core.change_grupocaseiro_pessoa') and not request.user.is_superuser:
+            # Não é superusuário, mas tem permissão de mudar pessoas que sejam do mesmo grupo caseiro
             if request.user.grupo_caseiro:
                 filtro = list(
                     qs.filter(Q(grupo_caseiro=request.user.grupo_caseiro) | Q(discipuladores__grupo_caseiro=request.user.grupo_caseiro) | Q(companheiros__grupo_caseiro=request.user.grupo_caseiro) | Q(pessoa_pai__grupo_caseiro=request.user.grupo_caseiro) | Q(pessoa_mae__grupo_caseiro=request.user.grupo_caseiro)))
+                # Capturando toda a url da requisição
                 url = str(request.get_full_path)
-                id_form = int(re.sub('[^0-9]', '', url))
-                for pessoa in filtro:
-                    id = pessoa.id
-                    if id_form == id:
-                        controle = True
-                if not controle:
-                    raise ValueError(
-                        'Não tem autorização para acessar a página')
+                if re.sub('[^0-9]', '', url):
+                    # Verifica o id da pessoa a ser editada que fica armazenada na url
+                    id_form = int(re.sub('[^0-9]', '', url))
+                    for pessoa in filtro:
+                        id = pessoa.id
+                        if id_form == id:
+                            controle = True
+                    if not controle:
+                        raise ValueError(
+                            'Não tem autorização para acessar a página')
 
         elif request.user.has_perm('core.change_grupocaseiro_bloco_pessoa') and not request.user.is_superuser:
             if request.user.grupo_caseiro.bloco.id:
                 filtro = list(
                     qs.filter(grupo_caseiro__bloco_id=request.user.grupo_caseiro.bloco.id))
+                # Capturando toda a url da requisição
                 url = str(request.get_full_path)
-                id_form = int(re.sub('[^0-9]', '', url))
-            for pessoa in filtro:
-                id = pessoa.id
-                if id_form == id:
-                    controle = True
-            if not controle:
-                raise ValueError('Não tem autorização para acessar a página')
+                if re.sub('[^0-9]', '', url):
+                    # Verifica o id da pessoa a ser editada que fica armazenada na url
+                    id_form = int(re.sub('[^0-9]', '', url))
+                    for pessoa in filtro:
+                        id = pessoa.id
+                        if id_form == id:
+                            controle = True
+                    if not controle:
+                        raise ValueError(
+                            'Não tem autorização para acessar a página')
 
         form = super(PessoaAdmin, self).get_form(request, obj, **kwargs)
         form.current_user = current_user
