@@ -2,6 +2,6 @@
 data
 venv
 __pycache__
-docker-compose-dev.yml
-docker-compose_dev.yml
-docker-compose.dev.yml
+docker compose-dev.yml
+docker compose_dev.yml
+docker compose.dev.yml

@@ -4,7 +4,7 @@ Esse sistema tem por finalidade possibilitar o cadastro e autocadastro de dados 
 
 ## Inicializando
 
-Você precisa ter o `docker` e o `docker-compose` instalado em sua máquina. para isso verifique os links de documentação prorietária: [Docker](https://docs.docker.com/engine/install/) e [Docker-compose](https://docs.docker.com/compose/install/), nessa ordem.
+Você precisa ter o `docker` e o `docker compose` instalado em sua máquina. para isso verifique os links de documentação prorietária: [Docker](https://docs.docker.com/engine/install/) e [docker compose](https://docs.docker.com/compose/install/), nessa ordem.
 
 Primeiramente leia a [seção de arquivos .env](env) para setar as variáveis de ambiente como senhas de banco de dados. Para instalar todos os pacotes e dependências rode:
 
