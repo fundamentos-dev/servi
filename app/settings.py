@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-%u6f+!mya*7vvr44zrm90r3%9^85g!72b65s=(0zg%ju5zmfy6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['app', 'localhost', 'igrejaemsalvador.org', 'sci.igrejaemsalvador.org']
+ALLOWED_HOSTS = ['app', 'localhost', 'igrejaemsalvador.org', 'sci.igrejaemsalvador.org', '191.101.70.201']
 
 # Application definition
 INSTALLED_APPS = [
