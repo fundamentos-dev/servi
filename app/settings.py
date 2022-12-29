@@ -119,6 +119,7 @@ EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_SUBJECT_PREFIX = '[Cadastro do Discípulo] '
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_USER')
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
