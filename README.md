@@ -68,3 +68,21 @@ make sass
 ## Gerando usuários e Objetos iniciais de teste
 
 Após terminado de escrever o script que gerará os usuários em `seed.py` rode o comando `make seed` para executá-lo, ou o comando que se encontra dentro do bloco `seed` do mesmo nome para Windows.
+
+## Envio de Email
+
+Para configurar o envio de email e permitir as requisições ao servidor SMTP de email de dentro do container é necessário [criar o documento `/etc/docker/daemon.json`](https://stackoverflow.com/questions/44761246/temporary-failure-in-name-resolution-errno-3-with-docker)
+
+```json
+{
+    "dns": ["8.8.8.8", "8.8.4.4"]
+}
+```
+
+E reiniciá-lo
+
+```
+systemctl restart docker
+```
+
+Agora `ping smtp.hostinger.com` deve funcionar de dentro do container.

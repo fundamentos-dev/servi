@@ -1,7 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from unidecode import unidecode
+from django.core.mail import send_mail
 
+import os
 import random
 import string
 import datetime
@@ -37,6 +39,34 @@ class PessoaManager(BaseUserManager):
 
         # send email if there is an email with random pass
         print(f'Senha criada para {username} é {password}')
+        if extra_fields['email']:
+            send_mail(
+                subject='Você acabou de ser cadastrado!',
+                html_message=f'''
+                <p>olá {nome},</p>
+                <p>Você acabou de ser cadastrado no Cadastro Geral de Discípulos (CGD) da Igreja em Salvador. Pode acessar o seu cadastro e editá-lo <a href="https://cgd.igrejaemsalvador.org">nesse link</a>. Seu usuário de acesso é {username} e sua senha de acesso é <strong>{password}</strong></p>
+                <p>Atenciosamente,</p>
+                <p>Equipe de Diaconato da Igreja em Salvador</p>
+                '''
+                from_email=os.environ.get('EMAIL_USER'),
+                recipient_list=[row['email']],
+                fail_silently=False,
+            )
+
+        # Envia email para o próprio email do cadastro para informar que houve cadastro
+        send_mail(
+            subject=f'Novo cadastro de discípulo - {nome}',
+            html_message=f'''
+            <p>Um discípulo acabou de ser cadastrado:<p>
+            <p>
+            Nome: <strong>{nome}</strong><br/>
+            Usuário: <strong>{username}</strong><br/>
+            Senha: <strong>{password}</strong><br/>
+            </p>''',
+            from_email=os.environ.get('EMAIL_USER'),
+            recipient_list=[os.environ.get('EMAIL_USER')],
+            fail_silently=False,
+        )
 
         user = self.model(nome=nome, username=username, **extra_fields)
         user.set_password(password)
