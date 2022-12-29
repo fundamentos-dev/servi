@@ -47,9 +47,9 @@ class PessoaManager(BaseUserManager):
                 <p>Você acabou de ser cadastrado no Cadastro Geral de Discípulos (CGD) da Igreja em Salvador. Pode acessar o seu cadastro e editá-lo <a href="https://cgd.igrejaemsalvador.org">nesse link</a>. Seu usuário de acesso é {username} e sua senha de acesso é <strong>{password}</strong></p>
                 <p>Atenciosamente,</p>
                 <p>Equipe de Diaconato da Igreja em Salvador</p>
-                '''
+                ''',
                 from_email=os.environ.get('EMAIL_USER'),
-                recipient_list=[row['email']],
+                recipient_list=[extra_fields['email']],
                 fail_silently=False,
             )
 
