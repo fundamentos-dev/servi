@@ -42,6 +42,7 @@ class PessoaManager(BaseUserManager):
         if extra_fields['email']:
             send_mail(
                 subject='Você acabou de ser cadastrado!',
+                message=f'Você acabou de ser cadastrado no Cadastro Geral de Discípulos (CGD) da Igreja em Salvador. Pode acessar o seu cadastro e editá-lo pelo link: https://cgd.igrejaemsalvador.org. Seu usuário de acesso é {username} e sua senha de acesso é {password}'
                 html_message=f'''
                 <p>olá {nome},</p>
                 <p>Você acabou de ser cadastrado no Cadastro Geral de Discípulos (CGD) da Igreja em Salvador. Pode acessar o seu cadastro e editá-lo <a href="https://cgd.igrejaemsalvador.org">nesse link</a>. Seu usuário de acesso é {username} e sua senha de acesso é <strong>{password}</strong></p>
@@ -56,6 +57,7 @@ class PessoaManager(BaseUserManager):
         # Envia email para o próprio email do cadastro para informar que houve cadastro
         send_mail(
             subject=f'Novo cadastro de discípulo - {nome}',
+            message=f'usuário criado. Nome: {nome}, usuário: {username}, senha: {password}'
             html_message=f'''
             <p>Um discípulo acabou de ser cadastrado:<p>
             <p>
