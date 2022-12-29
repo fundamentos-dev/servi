@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-%u6f+!mya*7vvr44zrm90r3%9^85g!72b65s=(0zg%ju5zmfy6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['app', 'localhost', 'igrejaemsalvador.org', 'sci.igrejaemsalvador.org', '191.101.70.201']
+ALLOWED_HOSTS = ['app', 'localhost', 'igrejaemsalvador.org', 'cgd.igrejaemsalvador.org', '191.101.70.201']
 
 # Application definition
 INSTALLED_APPS = [
@@ -110,6 +110,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_SUBJECT_PREFIX = '[Cadastro do Discípulo] '
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
